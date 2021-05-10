@@ -81,7 +81,7 @@ class Db
     private function openDBConnection(){
         $sqlDriver = 'mysql';
         $hostname = 'localhost';
-        $port = 3306;
+        $port = 3360;
         $charset = 'utf8';
         $dbName = 'bloomcomics';
         $userName = 'root';

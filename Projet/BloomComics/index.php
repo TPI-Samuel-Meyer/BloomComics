@@ -9,7 +9,7 @@
 session_start();
 
 // DB connection
-/*
+
 require_once 'model/dbConnector.php';
 try{
     $db = new Db;
@@ -17,7 +17,7 @@ try{
     echo 'Connection failed: ' . $exception->getMessage();
     die();
 }
-*/
+
 
 // Import all files contained in controller folder
 $controllerFiles = glob( __DIR__ . '/controller/*.php');

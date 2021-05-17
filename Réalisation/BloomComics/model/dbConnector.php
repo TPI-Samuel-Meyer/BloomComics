@@ -81,11 +81,11 @@ class Db
     private function openDBConnection(){
         $sqlDriver = 'mysql';
         $hostname = 'localhost';
-        $port = 3333;
+        $port = 3306;
         $charset = 'utf8';
         $dbName = 'bloomcomics';
         $userName = 'root';
-        $userPwd = '';
+        $userPwd = 'Pa$$w0rd';
         $dsn = $sqlDriver . ':host=' . $hostname . ';dbname=' . $dbName . ';port=' . $port . ';charset=' . $charset;
 
         $this->dbConnection = new PDO($dsn, $userName, $userPwd);

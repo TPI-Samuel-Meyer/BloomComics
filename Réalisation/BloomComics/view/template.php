@@ -16,8 +16,14 @@
 <body>
 <div class="header">
     <a class='brand' href='index.php?action=home'>BloomComics</a>
-    <div class="menu">
-    </div>
+    <a href='index.php?action=artwork'>Artwork</a>
+    <?php if(isset($_SESSION['username'])) :?>
+    <a href='index.php?action=profile'>Profile</a>
+    <a href='index.php?action=users'>Users</a>
+    <?php else : ?>
+    <a href='index.php?action=sign_in'>Sign in</a>
+    <a href='index.php?action=sign_up'>Sign up</a>
+    <?php endif; ?>
 </div>
 <div class="content">
     <?=$content;?>

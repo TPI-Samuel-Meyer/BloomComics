@@ -8,8 +8,10 @@
 // Session creation
 session_start();
 
-// DB connection
+global $errors;
+var_dump($errors);
 
+// DB connection
 require_once 'model/dbConnector.php';
 try{
     $db = new Db;
@@ -17,7 +19,6 @@ try{
     echo 'Connection failed: ' . $exception->getMessage();
     die();
 }
-
 
 // Import all files contained in controller folder
 $controllerFiles = glob( __DIR__ . '/controller/*.php');
@@ -27,19 +28,18 @@ foreach($controllerFiles as $file){require_once($file);}
 if(!isset($_GET['action'])){$_GET['action'] = 'home';}
 switch ($_GET['action']) {
 
-    /*
-     *
-     *  PAGES
-     *
-     */
+    case 'artwork' :
+        artwork();
+    break;
 
-    /*
-     *
-     *  FEATURES
-     *
-     */
+    case 'sign_in' :
+        sign_in_check($_POST);
+    break;
 
-    /* DEFAULT */
+    case 'sign_up' :
+        sign_up_check($_POST);
+    break;
+
     default :
         home();
     break;

@@ -5,7 +5,6 @@
  * Updated by:
  * - 26.10.20 - Samuel Meyer
  *  Function params entries optimisation.
- *
  */
 
 class Db
@@ -81,11 +80,11 @@ class Db
     private function openDBConnection(){
         $sqlDriver = 'mysql';
         $hostname = 'localhost';
-        $port = 3306;
+        $port = 7710;
         $charset = 'utf8';
         $dbName = 'bloomcomics';
-        $userName = 'root';
-        $userPwd = 'Pa$$w0rd';
+        $userName = 'bloomcomics';
+        $userPwd = 'hHZLCD562hm32GTr';
         $dsn = $sqlDriver . ':host=' . $hostname . ';dbname=' . $dbName . ';port=' . $port . ';charset=' . $charset;
 
         $this->dbConnection = new PDO($dsn, $userName, $userPwd);

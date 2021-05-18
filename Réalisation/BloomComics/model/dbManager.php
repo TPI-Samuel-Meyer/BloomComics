@@ -31,11 +31,11 @@ function select($targetedDatas, $table, $targetedElements = []){
 
 /**
  * This function is designed for sql insert query construction from params. It directly send the query with bdConnector.php insert function.
- * @param $newDatas [field => value] : must be a string array containing sql field and data to insert in. <field> as sql field and <value> as data to insert.
  * @param $table : must be the targeted table in database.
+ * @param $newDatas [field => value] : must be a string array containing sql field and data to insert in. <field> as sql field and <value> as data to insert.
  * @return int : $statement->execute() returns the last inserted id if the insert was successful.
  */
-function insert($newDatas = [], $table){
+function insert($table, $newDatas = []){
   global $db;
 
   $query = 'INSERT INTO '. $table .' (';
@@ -54,12 +54,12 @@ function insert($newDatas = [], $table){
 
 /**
  * This function is designed for sql update query construction from params. It directly send the query with bdConnector.php update function.
- * @param $newDatas [field => value] : must be a string array containing sql field and new data. <field> as sql field and <value> as new data.
  * @param $table : must be the targeted table in database.
  * @param $id : must be the targeted element id that data will be updated.
+ * @param $newDatas [field => value] : must be a string array containing sql field and new data. <field> as sql field and <value> as new data.
  * @return int : $statement->execute() returns the last inserted id if the insert was successful.
 **/
-function update($newDatas = [], $table, $id){
+function update($table, $id, $newDatas = []){
   global $db;
   $update = $params = [];
 

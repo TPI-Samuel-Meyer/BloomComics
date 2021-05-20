@@ -2,22 +2,22 @@
     <h1>Sign up</h1>
     <label>
         <span>Username</span>
-        <input name='username' type='text'/>
+        <input name='username' type='text' min='2' max='32' required/>
         <span><?=$errors['username'];?></span>
     </label>
     <label>
         <span>Email</span>
-        <input name='email' type='email'/>
+        <input name='email' type='email' required/>
         <span><?=$errors['email'];?></span>
     </label>
     <label>
         <span>Password</span>
-        <input name='password' type='password'/>
+        <input name='password' type='password' min='8' required/>
         <span><?=$errors['password'];?></span>
     </label>
     <label>
         <span>Confirm</span>
-        <input name='confirm' type='password'/>
+        <input name='confirm' type='password' required/>
     </label>
 
     <input type='submit'/>

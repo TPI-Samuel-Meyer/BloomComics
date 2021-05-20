@@ -7,8 +7,7 @@
 function sign_up_check($request = []){
     require_once "model/dbManager.php";
 
-    global $errors;
-
+    global $errors, $notify;
     $errors['username'] = '';
     $errors['email'] = '';
     $errors['password'] = '';
@@ -22,30 +21,31 @@ function sign_up_check($request = []){
         $effective = true;
 
         $username = $request['username'];
-        $result = check_text_length($username, 2, 32);
-        if($result != true){$errors['username'] = $result; $effective = false;}
+        $result = check_username($username);
+        if($result !== true){$errors['username'] = $result; $effective = false;}
 
         $email = $request['email'];
         $result = check_email($email);
-        if($result != true){$errors['email'] = $result; $effective = false;}
+        if($result !== true){$errors['email'] = $result; $effective = false;}
 
         $password = $request['password'];
         $confirm = $request['confirm'];
         $result = check_password_constraints($password, $confirm);
-        if($result != true){$errors['password'] = $result; $effective = false;}
+        if($result !== true){$errors['password'] = $result; $effective = false;}
 
         if($effective){
-            $datas['username'] = $username;
-            $datas['email'] = $email;
-            $datas['password'] = password_hash($password, PASSWORD_DEFAULT);
+            $data['username'] = $username;
+            $data['email'] = $email;
+            $data['password'] = password_hash($password, PASSWORD_DEFAULT);
             try{
-                insert('users', $datas);
-                notify('You are signed up! You can sign in now!');
+                insert('users', $data);
+                $notify = 'You are signed up! You can sign in now!';
 
                 header('Location: index.php?action=sign_in');
                 die();
             }catch(Exception $e){
-                notify("An error occurred. Try again later please.");
+                $notify = "An error occurred. Try again later please.";
+                sign_up();
             }
         }else{
             sign_up();
@@ -58,10 +58,22 @@ function sign_up_check($request = []){
 function check_email($email){
     require_once "model/dbManager.php";
 
-    $requestResult = select('email', 'users', array('email' => $email))[0]['email'];
-    if(isset($requestResult)){
-        if($requestResult == $email){return 'Please, try another email, this one is already signed up.';}
+    if(isset(select('email', 'users', array('email' => $email))[0]['email'])){
+        return 'Please, try another email, this one is already signed up.';
     }
+    return true;
+}
+
+function check_username($username){
+    require_once "model/dbManager.php";
+
+    if(isset(select('username', 'users', array('username' => $username))[0]['username'])){
+        return 'Please, try another username, this one is already signed up.';
+    }
+
+    $result = check_text_length($username, 2, 32);
+    if($result !== true){return $result;}
+
     return true;
 }
 
@@ -98,7 +110,7 @@ function check_password_constraints($password, $confirm){
         return 'Password requires at least 8 characters and 3 different types of characters.';
     }
 
-    if($password != $confirm){
+    if($password !== $confirm){
         return 'Password and confirm must be the sames.';
     }
 
@@ -107,52 +119,40 @@ function check_password_constraints($password, $confirm){
 
 function sign_in_check($request){
     require_once "model/dbManager.php";
+
+    global $errors, $notify;
+    $errors['sign in'] = '';
+
     if(
-        isset($request['email']) &&
-        isset($request['password'])
+        !empty($request['email']) &&
+        !empty($request['password'])
     ){
+        $email = $request['email'];
+        $password = $request['password'];
+
         $check = true;
 
-        // Init variables value from db datas
-        $emailCheck = select('email', 'users', array('email' => $request['email']))[0]['email'];
-        $hashCheck = select('password', 'users', array('email' => $request['email']))[0]['password'];
+        if(!isset(select('email', 'users', array('email' => $email))[0]['email'])){$check = false;}
 
-
-        if(!isset($emailCheck)){$check = false;}
-
-        // Sign in check and init session values
         if(
             $check &&
-            password_verify($request['password'], $hashCheck)
+            password_verify($password, select('password', 'users', array('email' => $email))[0]['password'])
         ){
             try{
                 createSession($request);
-                $_SESSION['message'] = "You are signed in! Welcome back!";
+                $notify = 'You are signed in! Welcome back!';
+
                 header('Location: index.php?action=home');
                 die();
             }catch(Exception $e){
-                $_SESSION['message'] = 'An error has occured. Please retry later.';
+                $notify = 'An error has occurred. Please retry later.';
                 sign_in();
             }
         }else{
-            $message['general'] = 'Username or password is wrong.';
+            $errors['sign in'] = 'Username or password is wrong.';
             sign_in();
         }
     }else{
         sign_in();
     }
-}
-
-function createSession($request){
-    require_once "model/dbManager.php";
-    $_SESSION['email'] = select('email', 'user', array('email' => $request['email']))[0]['email'];
-}
-
-/**
- * Init Sign out view
- */
-function sign_out(){
-    session_unset();
-    session_destroy();
-    home();
 }

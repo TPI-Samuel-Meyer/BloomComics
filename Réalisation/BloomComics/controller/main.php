@@ -16,7 +16,6 @@
 function page_constructor($page){
     ob_start();
     global $errors;
-    var_dump($errors);
     require_once 'view/'. $_GET['action'] .'.php';
 
     $content = ob_get_clean();
@@ -38,6 +37,13 @@ function artwork(){
 }
 
 /**
+ * This function is design to construct the article page.
+ */
+function description($object){
+    page_constructor('Description');
+}
+
+/**
  * This function is design to construct the sign in page.
  */
 function sign_in(){
@@ -51,14 +57,44 @@ function sign_up(){
     page_constructor('Sign up');
 }
 
+function createSession($request){
+    require_once "model/dbManager.php";
+    $_SESSION['username'] = select('username', 'users', array('email' => $request['email']))[0][0];
+    if(isset(select('role', 'roles', array('user' => select('id', 'users', array('email' => $request['email']))[0][0]))[0][0])) {
+        $_SESSION['type'] = select('role', 'roles', array('user' => select('id', 'users', array('email' => $request['email']))[0][0]))[0][0];
+    }
+}
+
 /**
- * This function is design to display instant notifications.
+ * This function is design to destroy user session when sign out.
+ */
+function sign_out(){
+    global $notify;
+    $notify = 'You are signed out. Thank you for your visit and do not forget to come back!';
+
+    session_unset();
+    session_destroy();
+    header('Location: index.php?action=home');
+    die();
+}
+
+/**
+ * This function is design to construct the profile page.
+ */
+function profile(){
+    page_constructor('Profile');
+}
+
+/**
+ * This function is design to display instant temporary notification.
+ * @param $text : must be the contained text in notification.
  */
 function notify($text){
     if(isset($text)){
         $time = strlen($text) * 75;
         $transition = 2;
         $total = $time + ($transition * 1000);
+
         echo "
       <div class='notification' id='notification'><div class='content'>". $text ."</div></div>
       <script>

@@ -8,9 +8,6 @@
 // Session creation
 session_start();
 
-global $errors;
-var_dump($errors);
-
 // DB connection
 require_once 'model/dbConnector.php';
 try{
@@ -24,6 +21,10 @@ try{
 $controllerFiles = glob( __DIR__ . '/controller/*.php');
 foreach($controllerFiles as $file){require_once($file);}
 
+global $notify;
+var_dump($notify);
+if(isset($notify)){notify($notify); unset($notify);}
+
 // Do GET action
 if(!isset($_GET['action'])){$_GET['action'] = 'home';}
 switch ($_GET['action']) {
@@ -32,9 +33,21 @@ switch ($_GET['action']) {
         artwork();
     break;
 
+    case 'description' :
+        description($_GET);
+    break;
+
+    case 'profile' :
+        profile();
+        break;
+
     case 'sign_in' :
         sign_in_check($_POST);
     break;
+
+    case 'sign_out' :
+        sign_out();
+        break;
 
     case 'sign_up' :
         sign_up_check($_POST);

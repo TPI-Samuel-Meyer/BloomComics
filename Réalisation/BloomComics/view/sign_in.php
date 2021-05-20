@@ -1,12 +1,13 @@
-<form>
+<form method='post' action='index.php?action=sign_in'>
     <h1>Sign in</h1>
+    <span><?=$errors['sign in'];?></span>
     <label>
-        <span>Username</span>
-        <input type='text'/>
+        <span>Email</span>
+        <input name='email' type='email' required/>
     </label>
     <label>
         <span>Password</span>
-        <input type='password'/>
+        <input name='password' type='password' required/>
     </label>
 
     <input type='submit'/>

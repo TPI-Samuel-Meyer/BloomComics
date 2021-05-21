@@ -16,6 +16,7 @@
 function page_constructor($page){
     ob_start();
     global $errors;
+    if(isset($_SESSION['notify'])){notify($_SESSION['notify']); unset($_SESSION['notify']);}
     require_once 'view/'. $_GET['action'] .'.php';
 
     $content = ob_get_clean();
@@ -34,6 +35,13 @@ function home(){
  */
 function artwork(){
     page_constructor('Artwork');
+}
+
+/**
+ * This function is design to construct the artwork page.
+ */
+function article(){
+    page_constructor('Article');
 }
 
 /**
@@ -60,6 +68,7 @@ function sign_up(){
 function createSession($request){
     require_once "model/dbManager.php";
     $_SESSION['username'] = select('username', 'users', array('email' => $request['email']))[0][0];
+    $_SESSION['id'] = select('id', 'users', array('email' => $request['email']))[0][0];
     if(isset(select('role', 'roles', array('user' => select('id', 'users', array('email' => $request['email']))[0][0]))[0][0])) {
         $_SESSION['type'] = select('role', 'roles', array('user' => select('id', 'users', array('email' => $request['email']))[0][0]))[0][0];
     }
@@ -69,13 +78,11 @@ function createSession($request){
  * This function is design to destroy user session when sign out.
  */
 function sign_out(){
-    global $notify;
-    $notify = 'You are signed out. Thank you for your visit and do not forget to come back!';
-
     session_unset();
     session_destroy();
-    header('Location: index.php?action=home');
-    die();
+    $_SESSION['notify'] = 'You are signed out. Thank you for your visit and do not forget to come back!';
+    $_GET['action'] = 'home';
+    home();
 }
 
 /**
@@ -113,4 +120,8 @@ function notify($text){
     ";
         unset($text);
     }
+}
+
+function users($object){
+    page_constructor('Users');
 }

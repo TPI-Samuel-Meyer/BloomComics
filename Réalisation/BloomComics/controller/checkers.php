@@ -7,7 +7,7 @@
 function sign_up_check($request = []){
     require_once "model/dbManager.php";
 
-    global $errors, $notify;
+    global $errors;
     $errors['username'] = '';
     $errors['email'] = '';
     $errors['password'] = '';
@@ -39,12 +39,12 @@ function sign_up_check($request = []){
             $data['password'] = password_hash($password, PASSWORD_DEFAULT);
             try{
                 insert('users', $data);
-                $notify = 'You are signed up! You can sign in now!';
+                $_SESSION['notify'] = 'You are signed up! You can sign in now!';
 
                 header('Location: index.php?action=sign_in');
                 die();
             }catch(Exception $e){
-                $notify = "An error occurred. Try again later please.";
+                $_SESSION['notify'] = "An error occurred. Try again later please.";
                 sign_up();
             }
         }else{
@@ -120,7 +120,7 @@ function check_password_constraints($password, $confirm){
 function sign_in_check($request){
     require_once "model/dbManager.php";
 
-    global $errors, $notify;
+    global $errors;
     $errors['sign in'] = '';
 
     if(
@@ -140,12 +140,12 @@ function sign_in_check($request){
         ){
             try{
                 createSession($request);
-                $notify = 'You are signed in! Welcome back!';
+                $_SESSION['notify'] = 'You are signed in! Welcome back!';
 
                 header('Location: index.php?action=home');
                 die();
             }catch(Exception $e){
-                $notify = 'An error has occurred. Please retry later.';
+                $_SESSION['notify'] = 'An error has occurred. Please retry later.';
                 sign_in();
             }
         }else{
@@ -154,5 +154,83 @@ function sign_in_check($request){
         }
     }else{
         sign_in();
+    }
+}
+
+function profile_check($request){
+    require_once "model/dbManager.php";
+
+    global $errors;
+    $errors['description'] = '';
+    $errors['import'] = '';
+
+    if(!empty($request['description'])) {
+        $data['description'] = $request['description'];
+        try{
+            update('users', $_SESSION['id'], $data);
+            $_SESSION['notify'] = 'Your description has been updated.';
+            profile();
+        }catch(Exception $e){
+            $_SESSION['notify'] = "An error occurred. Try again later please.";
+            profile();
+        }
+    }elseif(!empty($_FILES['import'])){
+        $type = $_FILES['import']['type'];
+        $name = $_SESSION['id'] .'pp';
+        $allowed = false;
+        switch($type){
+            case 'image/png':
+                $name .= '.png';
+                $allowed = true;
+            break;
+
+            case 'image/jpg':
+                $name .= '.jpg';
+                $allowed = true;
+            break;
+
+            case 'image/jpeg':
+                $name .= '.jpeg';
+                $allowed = true;
+            break;
+
+            default:
+                $allowed = false;
+            break;
+        }
+
+        if($allowed){
+            $url = 'view/content/picture/';
+            try{
+                $allPictures = scandir($url);
+                foreach($allPictures as $picture){
+                    $file = pathinfo($url. $picture);
+                    if($picture == $name){unlink($url . $file['basename']);}
+                }
+                move_uploaded_file($_FILES["import"]["tmp_name"], $url . $name);
+                profile();
+            }catch(Exception $e){
+                $_SESSION['notify'] = "An error occurred, please try again later.";
+                profile();
+            }
+        }else{
+            $_SESSION['notify'] = "Allowed extensions: 'png', 'jpg', 'jpeg'.";
+            profile();
+        }
+    }else{
+        profile();
+    }
+}
+
+function article_check($request){
+    require_once "model/dbManager.php";
+
+    if(!empty($request['mark'])){
+        $data['mark'] = $request['mark'];
+        $data['article'] = select('id', 'article', array('ui' => $_GET['ui']))[0][0];
+        $data['author'] = $_SESSION['id'];
+        insert('mark_as_article', $data);
+    }else{
+        article();
     }
 }

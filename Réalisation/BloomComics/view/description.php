@@ -16,7 +16,7 @@ $page = $data['title'];
         <br/>
         <p><?=$data['description'];?></p>
     </span>
-    <?php if(isset($_SESSION['email'])) : ?>
+    <?php if(isset($_SESSION['username'])) : ?>
         <button>Add an article</button>
     <?php endif;
     if(isset($_SESSION['type'])){

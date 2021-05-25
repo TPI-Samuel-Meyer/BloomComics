@@ -1,7 +1,7 @@
 <?php
 require_once "model/dbManager.php";
 require_once "view/view_helper.php";
-$data = select(['ui', 'title', 'description', 'releaseDate', 'editor', 'type'], 'artworks', array('ui' => $_GET['ui']))[0];
+$data = select(['id', 'ui', 'title', 'description', 'releaseDate', 'editor', 'type'], 'artworks', array('ui' => $_GET['ui']))[0];
 $page = $data['title'];
 ?>
 <div class='description'>
@@ -17,11 +17,11 @@ $page = $data['title'];
         <p><?=$data['description'];?></p>
     </span>
     <?php if(isset($_SESSION['username'])) : ?>
-        <button>Add an article</button>
+        <button onclick="location.href='index?action=add_article&id=<?=$data['id'];?>';">Add an article</button>
     <?php endif;
     if(isset($_SESSION['type'])){
         if($_SESSION['type'] == 1) : ?>
-            <button>Modify</button>
+            <button onclick="location.href='index?action=modify_artwork&id=<?=$data['id'];?>';">Modify</button>
             <button>Remove</button>
         <?php endif;
     } ?>

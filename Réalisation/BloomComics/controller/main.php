@@ -125,3 +125,46 @@ function notify($text){
 function users($object){
     page_constructor('Users');
 }
+
+/**
+ * This function is design to construct the add_article page.
+ */
+function add_article()
+{
+    ob_start();
+    global $errors;
+    $page = 'Add article';
+    if (isset($_SESSION['notify'])) {
+        notify($_SESSION['notify']);
+        unset($_SESSION['notify']);
+    }
+    $content = include 'view/form.php';
+
+    $content = ob_get_clean();
+    require_once "view/template.php";
+}
+
+/**
+ * This function is design to construct the add_artwork page.
+ */
+function add_artwork(){
+    ob_start();
+    global $errors;
+    $page = 'Add artwork';
+    if(isset($_SESSION['notify'])){notify($_SESSION['notify']); unset($_SESSION['notify']);}
+    $content = include 'view/form.php';
+
+    $content = ob_get_clean();
+    require_once "view/template.php";
+}
+
+function modify_artwork(){
+    ob_start();
+    global $errors;
+    $page = 'Modify artwork';
+    if(isset($_SESSION['notify'])){notify($_SESSION['notify']); unset($_SESSION['notify']);}
+    $content = include 'view/form.php';
+
+    $content = ob_get_clean();
+    require_once "view/template.php";
+}

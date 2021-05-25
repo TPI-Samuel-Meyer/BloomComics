@@ -3,7 +3,7 @@ require_once "view/view_helper.php";
 if(isset($_SESSION['type'])){
     if($_SESSION['type'] == 1) : ?>
         <span>
-            <button>Add artwork</button>
+            <button onclick="location.href='index?action=add_artwork';">Add artwork</button>
             <button>Modify categories</button>
         </span>
     <?php endif;

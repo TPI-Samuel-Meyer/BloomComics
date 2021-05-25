@@ -2,7 +2,9 @@
 require_once "model/dbManager.php";
 require_once "view/view_helper.php";
 $data = select(['id', 'username', 'description'], 'users', array('id' => $_GET['id']))[0];
+
 if($_GET['id'] == $_SESSION['id']) : ?>
+
 <div class='description'>
     <img src='<?=check_img($data['id'] .'pp');?>'
         onclick="document.getElementById('import_ppup').style.display = 'block';"
@@ -25,6 +27,7 @@ if($_GET['id'] == $_SESSION['id']) : ?>
 </form>
 
 <?php else : ?>
+
     <div class='description'>
         <img src='<?=check_img($data['id'] .'pp');?>'/>
         <span class='content'>
@@ -36,4 +39,5 @@ if($_GET['id'] == $_SESSION['id']) : ?>
             <?php endif;
         } ?>
     </div>
+
 <?php endif; ?>

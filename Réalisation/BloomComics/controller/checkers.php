@@ -174,52 +174,13 @@ function profile_check($request){
             $_SESSION['notify'] = "An error occurred. Try again later please.";
             profile();
         }
-    }elseif(!empty($_FILES['import'])){
-        $type = $_FILES['import']['type'];
-        $name = $_SESSION['id'] .'pp';
-        $allowed = false;
-        switch($type){
-            case 'image/png':
-                $name .= '.png';
-                $allowed = true;
-            break;
-
-            case 'image/jpg':
-                $name .= '.jpg';
-                $allowed = true;
-            break;
-
-            case 'image/jpeg':
-                $name .= '.jpeg';
-                $allowed = true;
-            break;
-
-            default:
-                $allowed = false;
-            break;
-        }
-
-        if($allowed){
-            $url = 'view/content/picture/';
-            try{
-                $allPictures = scandir($url);
-                foreach($allPictures as $picture){
-                    $file = pathinfo($url. $picture);
-                    if($picture == $name){unlink($url . $file['basename']);}
-                }
-                move_uploaded_file($_FILES["import"]["tmp_name"], $url . $name);
-                profile();
-            }catch(Exception $e){
-                $_SESSION['notify'] = "An error occurred, please try again later.";
-                profile();
-            }
-        }else{
-            $_SESSION['notify'] = "Allowed extensions: 'png', 'jpg', 'jpeg'.";
-            profile();
-        }
-    }else{
-        profile();
     }
+    if (isset($_FILES['import'])) {
+        $filename = $_SESSION['id'] .'pp';
+        import_picture($_FILES['import'], $filename, 'view/content/picture/');
+        $_SESSION['notify'] = "Your profile picture has been changed.";
+    }
+    profile();
 }
 
 function article_check($request){
@@ -227,10 +188,149 @@ function article_check($request){
 
     if(!empty($request['mark'])){
         $data['mark'] = $request['mark'];
-        $data['article'] = select('id', 'article', array('ui' => $_GET['ui']))[0][0];
+        $data['article'] = select('id', 'articles', ['ui' => $_GET['ui']])[0][0];
         $data['author'] = $_SESSION['id'];
-        insert('mark_as_article', $data);
-    }else{
-        article();
+
+        if (isset(select('id', 'mark_as_article', ['article' => $data['article'],'author' => $_SESSION['id']])[0][0])) {
+            update('mark_as_article', select('id', 'mark_as_article', ['article' => $data['article'],'author' => $_SESSION['id']])[0][0], ['mark' => $data['mark']]);
+        }
+        else {
+            insert('mark_as_article', $data);
+        }
     }
+    article();
+}
+
+function add_article_check($request){
+    require_once "model/dbManager.php";
+
+    if(
+        !empty($request['title']) ||
+        isset($_FILES['import'])
+    ){
+        $data['ui'] = '';
+        if (!empty($request['title'])){
+            $data['ui'] = ui_generation('articles');
+            $data['title'] = $request['title'];
+            $data['releaseDate'] = $request['releaseDate'];
+            $data['description'] = $request['description'];
+            $data['artwork'] = $_GET['id'];
+            $data['author'] = $_SESSION['id'];
+            insert('articles', $data);
+        }
+
+        if (isset($_FILES['import'])) {
+            $filename = $data['ui'];
+            import_picture($_FILES['import'], $filename, 'view/content/picture/');
+        }
+        $_SESSION['notify'] = "Article added in database.";
+        header('Location: index.php?action=article&ui='. $data['ui']);
+        die();
+    }
+    add_article();
+}
+
+function add_artwork_check($request){
+    require_once "model/dbManager.php";
+
+    if(
+        !empty($request['title']) ||
+        isset($_FILES['import'])
+    ){
+        $data['ui'] = '';
+        if (!empty($request['title'])){
+            $data['ui'] = ui_generation('articles');
+            $data['title'] = $request['title'];
+            $data['releaseDate'] = $request['releaseDate'];
+            $data['description'] = $request['description'];
+            $data['editor'] = $request['editor'];
+            $data['type'] = $request['type'];
+            insert('artworks', $data);
+        }
+
+        if (isset($_FILES['import'])) {
+            $filename = $data['ui'];
+            import_picture($_FILES['import'], $filename, 'view/content/picture/');
+        }
+        $_SESSION['notify'] = "Artwork added in database.";
+        header('Location: index.php?action=description&ui='. $data['ui']);
+        die();
+    }
+    add_artwork();
+}
+
+function ui_generation($table){
+    $numeric = '1234567890';
+    $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $lowercase = 'abcdefghijklmnopqrstuvwxyz';
+
+    $ui = '';
+    $valid = false;
+
+    while(!$valid){
+        while(strlen($ui) < 32){
+            $charType = rand(1, 3);
+            switch($charType){
+                case 1: $ui .= $numeric[rand(0, strlen($numeric) -1)];
+                break;
+                case 2: $ui .= $uppercase[rand(0, strlen($uppercase) -1)];
+                break;
+                case 3: $ui .= $lowercase[rand(0, strlen($lowercase) -1)];
+                break;
+            }
+        }
+
+        require_once "model/dbManager.php";
+        if (!isset(select('ui', $table, ['ui' => $ui])[0][0])) {
+            $valid = true;
+        }
+        else $ui = '';
+    }
+    return $ui;
+}
+
+function picture_check($picture, $filename){
+    if (!empty($picture)) {
+        $type = $picture['type'];
+        $allowed = true;
+        switch($type){
+            case 'image/png':
+                $filename .= '.png';
+            break;
+
+            case 'image/jpg':
+                $filename .= '.jpg';
+            break;
+
+            case 'image/jpeg':
+                $filename .= '.jpeg';
+            break;
+
+            default:
+                $allowed = false;
+            break;
+        }
+    }
+    if ($allowed) return $filename;
+    return false;
+}
+
+function import_picture($newPicture, $filename, $url){
+    $pictureCheck = picture_check($newPicture, $filename);
+    if($pictureCheck !== false){
+        try{
+            $allPictures = scandir($url);
+            foreach($allPictures as $picture){
+                $file = pathinfo($url. $picture);
+                if($file['filename'] == $newPicture['name']){unlink($url . $file['basename']);}
+            }
+            move_uploaded_file($newPicture["tmp_name"], $url . $pictureCheck);
+        }catch(Exception $e){
+            $_SESSION['notify'] = "An error occurred, please try again later.";
+        }
+    }else $_SESSION['notify'] = "Allowed extensions: 'png', 'jpg', 'jpeg'.";
+}
+
+function modify_artwork_check($request){
+    modify_artwork();
 }

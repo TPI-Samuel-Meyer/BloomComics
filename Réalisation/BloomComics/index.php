@@ -17,9 +17,6 @@ try{
     die();
 }
 
-require_once 'model/dbManager.php';
-var_dump(select('id', 'articles', array('ui' => $_GET['ui'])));
-
 // Import all files contained in controller folder
 $controllerFiles = glob( __DIR__ . '/controller/*.php');
 foreach($controllerFiles as $file){require_once($file);}
@@ -34,7 +31,19 @@ switch ($_GET['action']) {
 
     case 'article' :
         article_check($_POST);
-        break;
+    break;
+
+    case 'add_article' :
+        add_article_check($_POST);
+    break;
+
+    case 'add_artwork' :
+        add_artwork_check($_POST);
+    break;
+
+    case 'modify_artwork' :
+        modify_artwork_check($_POST);
+    break;
 
     case 'description' :
         description($_GET);

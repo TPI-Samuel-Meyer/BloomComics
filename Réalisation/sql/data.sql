@@ -21,3 +21,18 @@ VALUES
 ('7R8kpKTdQDyAp6DweWRkspC43AQ5Dt5m', 'Rick and Morty Season 4', '', 2, '2019-11-10', 42),
 ('CahcyBuGn3JdYCRBTWXxmF6NQ5dVB89a', 'Rick and Morty Specials', '', 2, '2020-03-29', 42),
 ('Kf85cfAPYSz5N2Mn84shJjBJhfBjRMT2', 'Rick and Morty Season 5', '', 2, '2021-06-20', 42)
+
+INSERT INTO categories (`name`)
+VALUES
+('Fantasy'),
+('Adventure'),
+('Romance'),
+('Action'),
+('Mystery'),
+('Horror'),
+('Thriller'),
+('Paranormal'),
+('Historical fiction'),
+('Science fiction'),
+('Historical'),
+('Humor')

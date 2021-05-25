@@ -1,11 +1,13 @@
 <?php
 require_once "model/dbManager.php";
+require_once "view/view_helper.php";
+
 $action = $_GET['action'];
 if(str_contains($action, 'artwork')){
     if (str_contains($action, 'modify')){
         $data = select('id, ui, title, description, releaseDate, editor, type', 'artworks', ['id' => $_GET['id']])[0];
+        $data['type'] = select('name', 'types', ['id' => $data['type']])[0][0];
     }
-    $data['type'] = select('name', 'types', ['id' => $data['type']])[0][0];
     $typeList = select('id, name', 'types');
     $categoriesList = select('id, name', 'categories');
     $editor = true;
@@ -25,7 +27,7 @@ if(str_contains($action, 'artwork')){
         <select name='type'>
             <option value='' <?php if (!isset($data['type'])) echo 'selected';?>>Select type</option>
             <?php foreach ($typeList as $type) : ?>
-                <option value='<?=$type['id'];?>' <?php if ($type['name'] == $data['type']) echo 'selected';?>><?=$type['name'];?></option>
+                <option value='<?=$type['id'];?>' <?php if (isset($data['type'])) if ($type['name'] == $data['type']) echo 'selected';?>><?=$type['name'];?></option>
             <?php endforeach; ?>
         </select>
     <?php endif; ?>
@@ -40,14 +42,22 @@ if(str_contains($action, 'artwork')){
     <?php endif; ?>
 
     <?php if ($editor) : ?>
-        <input name='editor' type='text' value='<?php if (isset($data['editor'])) echo $data['editor'];?>'/>
+        <label>
+            <span>Editor</span>
+            <input name='editor' type='text' value='<?php if (isset($data['editor'])) echo $data['editor'];?>'/>
+        </label>
     <?php endif; ?>
 
+    <?php if (isset($data['ui'])) if (check_img($data['ui']) == 'view/content/picture/none.jpg') : ?>
+        <p>A picture is missing.</p>
+    <?php else : ?>
+        <img width='100px' height='auto' src='<?=check_img($data['ui']);?>'/>
+    <?php endif; ?>
     <input type='file' name='import' accept='image/png, image/jpeg, image/jpg'/>
     <label>
         <span>Description</span>
         <textarea name='description'><?php if (isset($data['description'])) echo $data['description'];?></textarea>
     </label>
-    <input type='reset' value='Cancel'/>
-    <input type='submit' value='Confirm'/>
+    <input type='reset' value='Cancel' onclick="location.href='index?action=artwork'"/>
+    <input name='submit' type='submit' value='Confirm'/>
 </form>

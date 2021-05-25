@@ -332,5 +332,21 @@ function import_picture($newPicture, $filename, $url){
 }
 
 function modify_artwork_check($request){
+    require_once "model/dbManager.php";
+    if (isset($request['submit'])){
+        update('artworks', $_GET['id'],
+            [
+                'title' => $request['title'],
+                'releaseDate' => $request['releaseDate'],
+                'type' => $request['type'],
+                'editor' => $request['editor'],
+                'description' => $request['description']
+            ]
+        );
+
+        $_SESSION['notify'] = "Artwork has been modified.";
+        header('Location: index.php?action=description&ui='. select('ui', 'artworks', ['id' => $_GET['id']])[0][0]);
+        die();
+    }
     modify_artwork();
 }

@@ -17,13 +17,13 @@ $page = $data['title'];
         <p><?=$data['description'];?></p>
     </span>
     <?php if(isset($_SESSION['username'])) : ?>
-        <button onclick="location.href='index?action=add_article&ui=<?=$data['ui'];?>';">Add an article</button>
+        <button onclick="location.href='index.php?action=add_article&ui=<?=$data['ui'];?>';">Add an article</button>
     <?php endif;
     if(isset($_SESSION['type'])){
         if($_SESSION['type'] == 1) : ?>
-            <button onclick="location.href='index?action=modify_artwork&ui=<?=$data['ui'];?>';">Modify</button>
+            <button onclick="location.href='index.php?action=modify_artwork&ui=<?=$data['ui'];?>';">Modify</button>
             <button
-                    onclick="ppup_confirm('confirmation_ppup', 'index.php?action=remove_artwork&ui=<?=$data['ui'];?>', 'Are you sure you want remove this artwork?', 'All its articles and marks will be removed.', 1000);"
+                    onclick="ppup_confirm('confirmation_ppup', 'index.php.php?action=remove_artwork&ui=<?=$data['ui'];?>', 'Are you sure you want remove this artwork?', 'All its articles and marks will be removed.', 1000);"
             >Remove</button>
         <?php endif;
     } ?>
@@ -32,7 +32,7 @@ $page = $data['title'];
 <?php require_once "model/dbManager.php";
 $data = select(['ui', 'title', 'description'], 'articles', array('artwork' => select('id', 'artworks', array('ui' => $_GET['ui']))[0][0]));
 foreach($data as $key => $article) : ?>
-    <a class='card' href='index?action=article&ui=<?=$article['ui'];?>'>
+    <a class='card' href='index.php?action=article&ui=<?=$article['ui'];?>'>
         <img src='<?=check_img($article['ui']);?>' />
         <span class='content'>
             <span class='title'><?=$article['title'];?></span>

@@ -82,9 +82,9 @@ class Db
         $hostname = 'localhost';
         $port = 7710;
         $charset = 'utf8';
-        $dbName = 'bloomcomics';
-        $userName = 'bloomcomics';
-        $userPwd = 'hHZLCD562hm32GTr';
+        $dbName = 'tpi_sma_main';
+        $userName = 'tpi_sma_manage';
+        $userPwd = 'aMNc_dX7';
         $dsn = $sqlDriver . ':host=' . $hostname . ';dbname=' . $dbName . ';port=' . $port . ';charset=' . $charset;
 
         $this->dbConnection = new PDO($dsn, $userName, $userPwd);

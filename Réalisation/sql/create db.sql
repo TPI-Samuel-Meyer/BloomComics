@@ -132,4 +132,5 @@ ADD FOREIGN KEY (`user`) REFERENCES `users`(`id`);
 
 ALTER TABLE `user_as_user`
 ADD FOREIGN KEY (`user1`) REFERENCES `users`(`id`);
+ALTER TABLE `user_as_user`
 ADD FOREIGN KEY (`user2`) REFERENCES `users`(`id`);

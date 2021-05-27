@@ -21,5 +21,5 @@
     </label>
 
     <input type='submit'/>
-    <a href='index?action=sign_in'>Already have an account? Sign in!</a>
+    <a href='index.php?action=sign_in'>Already have an account? Sign in!</a>
 </form>

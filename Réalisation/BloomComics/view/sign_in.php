@@ -11,5 +11,5 @@
     </label>
 
     <input type='submit'/>
-    <a href='index?action=sign_up'>Don't already have an account? Sign up!</a>
+    <a href='index.php?action=sign_up'>Don't already have an account? Sign up!</a>
 </form>

@@ -65,6 +65,6 @@ if(str_contains($action, 'article')){
         <span>Description</span>
         <textarea name='description'><?php if (isset($data['description'])) echo $data['description'];?></textarea>
     </label>
-    <input type='reset' value='Cancel' onclick="location.href='index?action=artwork'"/>
+    <input type='reset' value='Cancel' onclick="location.href='index.php?action=artwork'"/>
     <input name='submit' type='submit' value='Confirm'/>
 </form>

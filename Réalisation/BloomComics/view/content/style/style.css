@@ -1,6 +1,160 @@
-body{
-    font-family: Helvetica, sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+:root {
+    --primary: #4c94f6;
+    --d-primary: #4c69f6;
+    --on-primary: ghostwhite;
+    --surface: ghostwhite;
+    --on-surface: #0a1c20;
+
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+    --header-height: 72px;
+
+    --transition-time: .25s;
+}
+
+body {
+    background-color: var(--surface);
+    box-sizing: border-box;
+    color: var(--on-surface);
+    font-family: Roboto;
     margin: 0;
+}
+
+.brand {
+    height: var(--header-height);
+}
+
+.header {
+    background-color: var(--on-surface);
+    box-shadow: var(--box-shadow);
+    font-size: larger;
+    height: var(--header-height);
+    width: 100%;
+    position: fixed;
+}
+
+.header a {
+    color: var(--surface);
+    display: table-cell;
+    height: var(--header-height);
+    padding: 0 16px;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.header span {
+    display: inline-table;
+}
+
+.header .search-button {
+    color: var(--surface);
+    cursor: pointer;
+    display: table-cell;
+    height: var(--header-height);
+    margin-left: 24px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    width: var(--header-height);
+}
+
+.header .search-button:hover {
+    background-color: rgba(0, 0, 0, .05);
+    opacity: .9;
+    transition: var(--transition-time);
+}
+
+#nav-search-bar {
+    background-color: var(--surface);
+    height: var(--header-height);
+    position: fixed;
+    width: 100%;
+}
+
+#nav-search-bar span{
+    color: var(--on-surface);
+    cursor: pointer;
+    display: table-cell;
+    height: var(--header-height);
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    width: var(--header-height);
+}
+
+#nav-search-bar input{
+    background-color: transparent;
+    border: none;
+    color: var(--on-surface);
+    font-size: 1.5rem;
+    height: var(--header-height);
+    outline: none;
+    padding: 0 72px 0 40px;
+    width: auto;
+}
+
+.nav-features {
+    float: right;
+}
+
+.tabbed-section__selector:hover .tabbed-section__selector-tab {
+    opacity: .75;
+}
+
+.tabbed-section__selector:hover .tabbed-section__selector-tab:hover {
+    opacity: 1;
+}
+
+.floating-btn {
+    width: 80px;
+    height: 80px;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 50%;
+    color: var(--on-primary);
+    font-size: 40px;
+    box-shadow: var(--box-shadow);
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    transition: var(--transition-time);
+
+    outline: blue;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.floating-btn-active {
+    background: var(--d-primary);
+    transform: rotate(45deg);
+}
+
+.ripple {
+    position: absolute;
+    background: var(--on-primary);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    border-radius: 50%;
+    animation: animate .25s linear infinite;
+}
+@keyframes animate{
+    0%{
+        width: 0px;
+        height: 0px;
+        opacity: .25;
+    }
+    100%{
+        width: 160px;
+        height: 160px;
+        opacity: .25;
+    }
 }
 
 .card {
@@ -40,10 +194,11 @@ body{
 .content {
     margin: auto;
     text-align: center;
+    padding-top: var(--header-height);
 }
 
 .description {
-    background-color: #212121;
+    background-color: var(--on-surface);
     color: white;
     text-align: left;
 }

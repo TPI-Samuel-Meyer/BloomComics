@@ -3,7 +3,7 @@ require_once "view/view_helper.php";
 if(isset($_SESSION['type'])){
     if($_SESSION['type'] == 1) : ?>
         <span>
-            <button onclick="location.href='index?action=add_artwork';">Add artwork</button>
+            <button onclick="location.href='index.php?action=add_artwork';">Add artwork</button>
             <button>Modify categories</button>
         </span>
     <?php endif;
@@ -28,7 +28,7 @@ require_once "model/dbManager.php";
     $data = select(['ui', 'title', 'description', 'type'], 'artworks');
     foreach($data as $key => $artwork) : ?>
 
-    <a class='card' href='index?action=description&ui=<?=$artwork['ui'];?>'>
+    <a class='card' href='index.php?action=description&ui=<?=$artwork['ui'];?>'>
         <img src='<?=check_img($artwork['ui']);?>' />
         <span class='content'>
             <span class='title'><?=$artwork['title'];?></span>

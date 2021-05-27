@@ -17,7 +17,7 @@ $page = $data['title'];
     <span><?=$data['releaseDate'];?></span>
     <br/>
     <?php if(isset($_SESSION['username'])) : ?>
-        <form id='mark_form' method='post' action='index?action=article&ui=<?=$data['ui'];?>'>
+        <form id='mark_form' method='post' action='index.php?action=article&ui=<?=$data['ui'];?>'>
             <select name='mark' onchange="document.getElementById('mark_form').submit();">
                 <option value='' <?php if (!isset($data['mark'])){echo 'selected';} ?>>Mark article</option>
                 <option value='10' <?php if ($data['mark'] == 10){echo 'selected';} ?>>10 - Masterpiece</option>
@@ -36,9 +36,9 @@ $page = $data['title'];
 </span>
     <?php if(isset($_SESSION['type'])){
         if($_SESSION['type'] == 1) : ?>
-            <button onclick="location.href='index?action=modify_article&ui=<?=$data['ui'];?>';">Modify</button>
+            <button onclick="location.href='index.php?action=modify_article&ui=<?=$data['ui'];?>';">Modify</button>
             <button
-                    onclick="ppup_confirm('confirmation_ppup', 'index.php?action=remove_article&ui=<?=$data['ui'];?>', 'Are you sure you want remove this article?', 'All users marks will be removed.', 1000);"
+                    onclick="ppup_confirm('confirmation_ppup', 'index.php.php?action=remove_article&ui=<?=$data['ui'];?>', 'Are you sure you want remove this article?', 'All users marks will be removed.', 1000);"
             >Remove</button>
         <?php endif;
     } ?>

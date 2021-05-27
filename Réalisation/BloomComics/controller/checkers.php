@@ -214,9 +214,9 @@ function add_article_check($request){
             $data['title'] = $request['title'];
             $data['releaseDate'] = $request['releaseDate'];
             $data['description'] = $request['description'];
-            $data['artwork'] = $_GET['id'];
+            $data['artwork'] = select('id', 'artworks', ['ui' => $_GET['ui']])[0][0];
             $data['author'] = $_SESSION['id'];
-            insert('articles', $data);
+            var_dump(insert('articles', $data));
         }
 
         if (isset($_FILES['import'])) {
@@ -255,6 +255,7 @@ function add_artwork_check($request){
         $_SESSION['notify'] = "Artwork added in database.";
         header('Location: index.php?action=description&ui='. $data['ui']);
         die();
+
     }
     add_artwork();
 }
@@ -334,7 +335,7 @@ function import_picture($newPicture, $filename, $url){
 function modify_artwork_check($request){
     require_once "model/dbManager.php";
     if (isset($request['submit'])){
-        update('artworks', $_GET['id'],
+        update('artworks', select('id', 'artworks', ['ui' => $_GET['ui']])[0][0],
             [
                 'title' => $request['title'],
                 'releaseDate' => $request['releaseDate'],
@@ -345,8 +346,48 @@ function modify_artwork_check($request){
         );
 
         $_SESSION['notify'] = "Artwork has been modified.";
-        header('Location: index.php?action=description&ui='. select('ui', 'artworks', ['id' => $_GET['id']])[0][0]);
+        header('Location: index.php?action=description&ui='. $_GET['ui']);
         die();
     }
     modify_artwork();
+}
+
+function modify_article_check($request){
+    require_once "model/dbManager.php";
+    if (isset($request['submit'])){
+        update('articles', select('id', 'articles', ['ui' => $_GET['ui']])[0][0],
+            [
+                'title' => $request['title'],
+                'releaseDate' => $request['releaseDate'],
+                'description' => $request['description'],
+                'artwork' => select('id', 'artworks', ['id' => select('artwork', 'articles', ['ui' => $_GET['ui']])[0][0]])[0][0],
+                'author' => $_SESSION['id']
+            ]
+        );
+
+        $_SESSION['notify'] = "Article has been modified.";
+        header('Location: index.php?action=article&ui='. select('ui', 'articles', ['ui' => $_GET['ui']])[0][0]);
+        die();
+    }
+    modify_article();
+}
+
+function remove_article(){
+    require_once "model/dbManager.php";
+    delete('mark_as_article', ['article' => select('id', 'articles', ['ui' => $_GET['ui']])[0][0]]);
+    delete('articles', ['ui' => $_GET['ui']]);
+
+    $_SESSION['notify'] = "Article has been removed.";
+    header('Location: index.php?action=artwork');
+    die();
+}
+
+function remove_artwork(){
+    require_once "model/dbManager.php";
+    delete('articles', ['artwork' => select('id', 'artworks', ['ui' => $_GET['ui']])[0][0]]);
+    delete('artworks', ['ui' => $_GET['ui']]);
+
+    $_SESSION['notify'] = "Artwork has been removed.";
+    header('Location: index.php?action=artwork');
+    die();
 }

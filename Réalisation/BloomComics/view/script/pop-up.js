@@ -14,7 +14,12 @@ function create_layer(ppup_id, zIndex){
 
     layer.id = `${ppup_id}_layer`;
     layer.className = 'layer';
-    layer.style.position = 'fixed';
+    layer.style.height = '100%';
+    layer.style.backgroundColor = 'rgba(0, 0, 0, .5)';
+    layer.style.left = 0;
+    layer.style.position = 'absolute';
+    layer.style.top = 0;
+    layer.style.width = '100%';
     layer.style.zIndex = zIndex;
 
     return layer;
@@ -23,7 +28,6 @@ function create_layer(ppup_id, zIndex){
 /**
  * This function is designed to create a layer on the site interface.
  * @param {string} id : must be a chosen pop-up id.
- * @param {string} title : must be a chosen pop-up title.
  * @param {string} text : must be the pop-up descriptive text.
  * @param {number} zIndex : must be the css pop-up position.
  * @return {element} ppup : pop-up object.
@@ -34,14 +38,16 @@ function create_ppup(id, title, text, zIndex){
     ppup.id = id;
     ppup.className = 'ppup';
     ppup.style.display = 'block';
+    ppup.style.position = 'absolute';
     ppup.style.textAlign = 'center';
     ppup.style.zIndex = zIndex + 1;
     layer = create_layer(ppup.id, zIndex);
     document.body.appendChild(layer);
 
-    // Set pop-up title object params values
+    // Set pop-up content object params values
     var h3 = document.createElement('h3');
-    h3.textContent = title;
+    h3.innerHTML = title;
+    h3.className = 'ppup_title';
     ppup.appendChild(h3);
 
     // Set pop-up content object params values
@@ -60,12 +66,12 @@ function create_ppup(id, title, text, zIndex){
 /**
  * This function is designed to create a layer on the site interface.
  * @param {string} id : must be a chosen pop-up id.
- * @param {string} parent : must be the parent id.
  * @param {number} zIndex : must be the css pop-up position.
  * @return {element} ppup : pop-up object.
  */
-function ppup_unsavedChanges(id, parent = '', zIndex){
+function ppup_confirm(id, action, title, text, zIndex){
     // Set pop-up buttons objects params values
+    console.log(action);
     var btn = document.createElement('div');
     btn.style.width = '100%';
 
@@ -77,8 +83,7 @@ function ppup_unsavedChanges(id, parent = '', zIndex){
         primary_btn.addEventListener('click', function(){
             document.getElementById(id).remove();
             document.getElementById(`${id}_layer`).remove();
-            document.getElementById(parent).style.display = 'none';
-            document.getElementById(`${parent}_layer`).remove();
+            window.location.href = `${action}`;
         });
     }
 
@@ -94,8 +99,8 @@ function ppup_unsavedChanges(id, parent = '', zIndex){
     // Set pop-up params values
     ppup = create_ppup(
         id,
-        'Unsaved changes',
-        'Some changes have not been saved.<br>Are you sure you want to cancel ?',
+        title,
+        text,
         zIndex
     );
 

@@ -168,3 +168,14 @@ function modify_artwork(){
     $content = ob_get_clean();
     require_once "view/template.php";
 }
+
+function modify_article(){
+    ob_start();
+    global $errors;
+    $page = 'Modify article';
+    if(isset($_SESSION['notify'])){notify($_SESSION['notify']); unset($_SESSION['notify']);}
+    $content = include 'view/form.php';
+
+    $content = ob_get_clean();
+    require_once "view/template.php";
+}

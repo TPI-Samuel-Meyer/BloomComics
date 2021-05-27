@@ -36,8 +36,10 @@ $page = $data['title'];
 </span>
     <?php if(isset($_SESSION['type'])){
         if($_SESSION['type'] == 1) : ?>
-            <button>Modify</button>
-            <button>Remove</button>
+            <button onclick="location.href='index?action=modify_article&ui=<?=$data['ui'];?>';">Modify</button>
+            <button
+                    onclick="ppup_confirm('confirmation_ppup', 'index.php?action=remove_article&ui=<?=$data['ui'];?>', 'Are you sure you want remove this article?', 'All users marks will be removed.', 1000);"
+            >Remove</button>
         <?php endif;
     } ?>
 </div>

@@ -17,12 +17,14 @@ $page = $data['title'];
         <p><?=$data['description'];?></p>
     </span>
     <?php if(isset($_SESSION['username'])) : ?>
-        <button onclick="location.href='index?action=add_article&id=<?=$data['id'];?>';">Add an article</button>
+        <button onclick="location.href='index?action=add_article&ui=<?=$data['ui'];?>';">Add an article</button>
     <?php endif;
     if(isset($_SESSION['type'])){
         if($_SESSION['type'] == 1) : ?>
-            <button onclick="location.href='index?action=modify_artwork&id=<?=$data['id'];?>';">Modify</button>
-            <button>Remove</button>
+            <button onclick="location.href='index?action=modify_artwork&ui=<?=$data['ui'];?>';">Modify</button>
+            <button
+                    onclick="ppup_confirm('confirmation_ppup', 'index.php?action=remove_artwork&ui=<?=$data['ui'];?>', 'Are you sure you want remove this artwork?', 'All its articles and marks will be removed.', 1000);"
+            >Remove</button>
         <?php endif;
     } ?>
 </div>

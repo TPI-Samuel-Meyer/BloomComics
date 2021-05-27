@@ -37,6 +37,14 @@ switch ($_GET['action']) {
         add_article_check($_POST);
     break;
 
+    case 'modify_article' :
+        modify_article_check($_POST);
+    break;
+
+    case 'remove_article' :
+        remove_article();
+    break;
+
     case 'add_artwork' :
         add_artwork_check($_POST);
     break;
@@ -44,6 +52,10 @@ switch ($_GET['action']) {
     case 'modify_artwork' :
         modify_artwork_check($_POST);
     break;
+
+    case 'remove_artwork' :
+        remove_artwork();
+        break;
 
     case 'description' :
         description($_GET);

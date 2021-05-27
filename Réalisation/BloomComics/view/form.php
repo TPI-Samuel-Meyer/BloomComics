@@ -3,17 +3,24 @@ require_once "model/dbManager.php";
 require_once "view/view_helper.php";
 
 $action = $_GET['action'];
+$editor = false;
 if(str_contains($action, 'artwork')){
     if (str_contains($action, 'modify')){
-        $data = select('id, ui, title, description, releaseDate, editor, type', 'artworks', ['id' => $_GET['id']])[0];
+        $data = select('id, ui, title, description, releaseDate, editor, type', 'artworks', ['ui' => $_GET['ui']])[0];
         $data['type'] = select('name', 'types', ['id' => $data['type']])[0][0];
     }
     $typeList = select('id, name', 'types');
     $categoriesList = select('id, name', 'categories');
     $editor = true;
 }
+
+if(str_contains($action, 'article')){
+    if (str_contains($action, 'modify')){
+        $data = select('id, ui, title, description, releaseDate', 'articles', ['ui' => $_GET['ui']])[0];
+    }
+}
 ?>
-<form method='post' action='index.php?action=<?=$action;?><?php if (isset($_GET['id'])) echo '&id='. $_GET['id'];?>' enctype="multipart/form-data">
+<form method='post' action='index.php?action=<?=$action;?><?php if (isset($_GET['ui'])) echo '&ui='. $_GET['ui'];?>' enctype="multipart/form-data">
     <label>
         <span>Title</span>
         <input name='title' type='text' value='<?php if (isset($data['title'])) echo $data['title'];?>' required/>
@@ -24,7 +31,7 @@ if(str_contains($action, 'artwork')){
     </label>
 
     <?php if (isset($typeList)) : ?>
-        <select name='type'>
+        <select name='type' required>
             <option value='' <?php if (!isset($data['type'])) echo 'selected';?>>Select type</option>
             <?php foreach ($typeList as $type) : ?>
                 <option value='<?=$type['id'];?>' <?php if (isset($data['type'])) if ($type['name'] == $data['type']) echo 'selected';?>><?=$type['name'];?></option>

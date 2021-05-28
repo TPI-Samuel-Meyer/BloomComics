@@ -17,6 +17,6 @@
         <input name='password' type='password' required/>
     </label>
 
-    <input type='submit'/>
+    <button class='btn primary' type='submit'>Sign in</button>
     <a href='index.php?action=sign_up'>Don't already have an account? Sign up!</a>
 </form>

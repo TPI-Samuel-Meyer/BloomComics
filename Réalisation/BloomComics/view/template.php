@@ -3,6 +3,10 @@
  * User: Samuel Meyer
  * Date: 10.05.2021
  */
+require_once 'model/dbManager.php';
+if (isset($_SESSION['id']))
+    if (!empty(select('status', 'user_as_user', ['user2' => $_SESSION['id']])))
+        $notifications = count(select('status', 'user_as_user', ['user2' => $_SESSION['id']]));
  ?>
 <!DOCTYPE html>
 <html>
@@ -20,7 +24,7 @@
             <span class="tabbed-section__selector">
                 <a class="tabbed-section__selector-tab" href='index.php?action=artwork'>Artwork</a>
                 <?php if(isset($_SESSION['username'])) :?>
-                <a class="tabbed-section__selector-tab" href='index.php?action=profile&id=<?=$_SESSION['id'];?>'>Profile</a>
+                <a class="tabbed-section__selector-tab" href='index.php?action=profile&id=<?=$_SESSION['id'];?>'>Profile<?php if (isset($notifications)) {echo ' ('. $notifications .')';}?></a>
                 <a class="tabbed-section__selector-tab" href='index.php?action=users'>Users</a>
                 <a class="tabbed-section__selector-tab" href='index.php?action=sign_out'>Sign out</a>
                 <?php else : ?>
@@ -33,6 +37,7 @@
     <div class="content">
         <?=$content;?>
     </div>
-    <script src='view/script/pop-up.js'></script>
+    <script src='view/script/pop-up.js'>
+    <script src='view/script/ripples.js'></script>
 </body>
 </html>

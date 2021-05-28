@@ -22,12 +22,12 @@ $page = $data['title'];
         <p><?=$data['description'];?></p>
     </span>
     <?php if(isset($_SESSION['username'])) : ?>
-        <button onclick="location.href='index.php?action=add_article&ui=<?=$data['ui'];?>';">Add an article</button>
+        <button class='btn primary' onclick="location.href='index.php?action=add_article&ui=<?=$data['ui'];?>';">Add an article</button>
     <?php endif;
     if(isset($_SESSION['type'])){
         if($_SESSION['type'] == 1) : ?>
-            <button onclick="location.href='index.php?action=modify_artwork&ui=<?=$data['ui'];?>';">Modify</button>
-            <button
+            <button class='btn secondary' onclick="location.href='index.php?action=modify_artwork&ui=<?=$data['ui'];?>';">Modify</button>
+            <button class='btn third'
                     onclick="ppup_confirm('confirmation_ppup', 'index.php.php?action=remove_artwork&ui=<?=$data['ui'];?>', 'Are you sure you want remove this artwork?', 'All its articles and marks will be removed.', 1000);"
             >Remove</button>
         <?php endif;

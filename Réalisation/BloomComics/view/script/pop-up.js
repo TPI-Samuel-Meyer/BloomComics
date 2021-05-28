@@ -38,9 +38,6 @@ function create_ppup(id, title, text, zIndex){
     var ppup = document.createElement('div');
     ppup.id = id;
     ppup.className = 'ppup';
-    ppup.style.display = 'block';
-    ppup.style.position = 'absolute';
-    ppup.style.textAlign = 'center';
     ppup.style.zIndex = zIndex + 1;
     layer = create_layer(ppup.id, zIndex);
     document.body.appendChild(layer);

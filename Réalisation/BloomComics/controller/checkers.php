@@ -223,6 +223,16 @@ function profile_check($request){
         import_picture($_FILES['import'], $filename, 'view/content/picture/');
         $_SESSION['notify'] = "Your profile picture has been changed.";
     }
+
+    // Friend request
+    if (isset($request['friend_request'])) {
+        $data['user1'] = $_SESSION['id'];
+        $data['user2'] = $_GET['id'];
+        $data['status'] = 1;
+        insert('user_as_user', $data);
+        $_SESSION['notify'] = "Your friend request has been sent.";
+    }
+
     profile();
 }
 

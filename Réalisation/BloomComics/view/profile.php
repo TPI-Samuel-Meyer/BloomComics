@@ -9,6 +9,9 @@ require_once "view/view_helper.php";
 // Select required data to display users
 require_once "model/dbManager.php";
 $data = select(['id', 'username', 'description'], 'users', array('id' => $_GET['id']))[0];
+if (isset($_SESSION['id']))
+    if (!empty(select('status', 'user_as_user', ['user2' => $_SESSION['id']])))
+        $notifications = count(select('status', 'user_as_user', ['user2' => $_SESSION['id']]));
 
 if($_GET['id'] == $_SESSION['id']) : ?>
 
@@ -18,6 +21,9 @@ if($_GET['id'] == $_SESSION['id']) : ?>
     />
     <span class='content'>
         <h3 class='title'><?=$data['username'];?></h3>
+    </span>
+    <span>
+        <button>Friends<?php if (isset($notifications)) {echo ' ('. $notifications .')';}?></button>
     </span>
 </div>
 <form method='post' action='index.php?action=profile&id=<?=$_GET['id'];?>'>
@@ -40,6 +46,13 @@ if($_GET['id'] == $_SESSION['id']) : ?>
         <span class='content'>
         <h3 class='title'><?=$data['username'];?></h3>
     </span>
+        <?php if (isset($_SESSION['id'])) {
+            if($_SESSION['id'] !== $_GET['id']) : ?>
+            <form method='post' action='index.php?action=profile&id=<?=$_GET['id'];?>'>
+                <button type='submit' name='friend_request'>Send a friend request</button>
+            </form>
+            <?php endif;
+        } ?>
         <?php if(isset($_SESSION['type'])){
             if($_SESSION['type'] == 1) : ?>
                 <button>Remove</button>

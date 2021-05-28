@@ -2,11 +2,12 @@
 
 :root {
     --primary: #4c94f6;
-    --d-primary: #4c69f6;
+    --secondary: #ee5454;
     --on-primary: ghostwhite;
     --surface: ghostwhite;
     --on-surface: #0a1c20;
 
+    --border-radius: 2px;
     --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
     --header-height: 72px;
@@ -44,58 +45,6 @@ body {
     vertical-align: middle;
 }
 
-.header span {
-    display: inline-table;
-}
-
-.header .search-button {
-    color: var(--surface);
-    cursor: pointer;
-    display: table-cell;
-    height: var(--header-height);
-    margin-left: 24px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    width: var(--header-height);
-}
-
-.header .search-button:hover {
-    background-color: rgba(0, 0, 0, .05);
-    opacity: .9;
-    transition: var(--transition-time);
-}
-
-#nav-search-bar {
-    background-color: var(--surface);
-    height: var(--header-height);
-    position: fixed;
-    width: 100%;
-}
-
-#nav-search-bar span{
-    color: var(--on-surface);
-    cursor: pointer;
-    display: table-cell;
-    height: var(--header-height);
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    width: var(--header-height);
-}
-
-#nav-search-bar input{
-    background-color: transparent;
-    border: none;
-    color: var(--on-surface);
-    font-size: 1.5rem;
-    height: var(--header-height);
-    outline: none;
-    padding: 0 72px 0 40px;
-    width: auto;
-}
-
 .nav-features {
     float: right;
 }
@@ -108,57 +57,28 @@ body {
     opacity: 1;
 }
 
-.floating-btn {
-    width: 80px;
-    height: 80px;
-    background: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    border-radius: 50%;
-    color: var(--on-primary);
-    font-size: 40px;
-    box-shadow: var(--box-shadow);
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    transition: var(--transition-time);
-
-    outline: blue;
+.btn {
     border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    color: var(--on-primary);
     cursor: pointer;
-    overflow: hidden;
+    font-size: larger;
+    opacity: .9;
+    padding: .5em 1em;
+    transition: var(--transition-time);
 }
 
-.floating-btn-active {
-    background: var(--d-primary);
-    transform: rotate(45deg);
-}
+.primary {background: var(--primary);}
+.secondary {background: var(--secondary);}
 
-.ripple {
-    position: absolute;
-    background: var(--on-primary);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    border-radius: 50%;
-    animation: animate .25s linear infinite;
-}
-@keyframes animate{
-    0%{
-        width: 0px;
-        height: 0px;
-        opacity: .25;
-    }
-    100%{
-        width: 160px;
-        height: 160px;
-        opacity: .25;
-    }
+.btn:hover {
+    opacity: 1;
+    transition: var(--transition-time);
 }
 
 .card {
-    border-radius: 2px;
+    border-radius: var(--border-radius);
     color: rgba(0, 0, 0, .8);
     display: inline-block;
     width: 25em;
@@ -215,10 +135,10 @@ body {
 
 .notification {
     background-color: var(--surface);
-    color: var(--on-surface);
-    border-left: solid 5px limegreen;
-    border-radius: 5px;
+    border-left: solid var(--border-radius) limegreen;
+    border-radius: var(--border-radius);
     box-shadow:  var(--box-shadow);
+    color: var(--on-surface);
     left: 50%;
     margin: 10px 0;
     max-width: 700px;
@@ -231,4 +151,40 @@ body {
 
 .notification-error {
     border-left: solid 5px red;
+}
+
+.ppup {
+    background-color: var(--surface);
+    border-radius: var(--border-radius);
+    box-shadow:  var(--box-shadow);
+    color: var(--on-surface);
+    left: 50%;
+    max-width: 500px;
+    position: fixed;
+    text-align: center;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: max-content;
+}
+.ppup_title {
+    padding: 1em 2em;
+    margin: 0;
+}
+
+.ppup_content {
+    padding: 0 0 2em;
+}
+
+.ppup .btn {
+    cursor: pointer;
+    padding: .5em;
+}
+
+.ppup .btn:hover {
+    background-color: gainsboro;
+    transition: var(--transition-time);
+}
+
+.ppup .primary_btn {
+    color: var(--primary);
 }

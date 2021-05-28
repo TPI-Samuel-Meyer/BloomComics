@@ -1,6 +1,12 @@
-<?php require_once "view/view_helper.php";?>
-
 <?php
+/*
+ * User: Samuel Meyer
+ * Date: 21.05.2021
+ */
+
+require_once "view/view_helper.php";
+
+// Select required data to display users
 require_once "model/dbManager.php";
 $data = select(['id', 'username', 'description'], 'users');
 foreach($data as $key => $user) : ?>

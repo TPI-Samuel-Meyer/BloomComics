@@ -1,13 +1,12 @@
 <?php
 /*
  * User: Samuel Meyer
- * Date: 15.02.2021
+ * Date: 21.01.20
  * Updated by:
- * - 21.01.20 - Samuel Meyer
+ * - 15.02.21 - Samuel Meyer
  *  Security against quotes function optimisation.
  * - 22.03.21 - Samuel Meyer
  *  Update secured function added and insert function securing.
- *
  */
 
 /**

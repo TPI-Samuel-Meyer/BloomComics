@@ -1,9 +1,16 @@
 <?php
-require_once "model/dbManager.php";
+/*
+ * User: Samuel Meyer
+ * Date: 18.05.2021
+ */
+
 require_once "view/view_helper.php";
 
+// Select required data to display users
+require_once "model/dbManager.php";
 $action = $_GET['action'];
 $editor = false;
+
 if(str_contains($action, 'artwork')){
     if (str_contains($action, 'modify')){
         $data = select('id, ui, title, description, releaseDate, editor, type', 'artworks', ['ui' => $_GET['ui']])[0];

@@ -1,3 +1,10 @@
+<?php
+/*
+ * User: Samuel Meyer
+ * Date: 18.05.2021
+ */
+?>
+
 <form method='post' action='index.php?action=sign_in'>
     <h1>Sign in</h1>
     <span><?=$errors['sign in'];?></span>

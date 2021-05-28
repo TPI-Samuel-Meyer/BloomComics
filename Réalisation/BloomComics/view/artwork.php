@@ -1,4 +1,9 @@
 <?php
+/*
+ * User: Samuel Meyer
+ * Date: 18.05.2021
+ */
+
 require_once "view/view_helper.php";
 if(isset($_SESSION['type'])){
     if($_SESSION['type'] == 1) : ?>
@@ -24,8 +29,10 @@ if(isset($_SESSION['type'])){
 </form>
 
 <?php
-require_once "model/dbManager.php";
+    // Select required data to display users
+    require_once "model/dbManager.php";
     $data = select(['ui', 'title', 'description', 'type'], 'artworks');
+    // Display artworks
     foreach($data as $key => $artwork) : ?>
 
     <a class='card' href='index.php?action=description&ui=<?=$artwork['ui'];?>'>

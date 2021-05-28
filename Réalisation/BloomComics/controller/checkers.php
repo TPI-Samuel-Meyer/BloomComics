@@ -4,6 +4,10 @@
  * Date: 18.05.20121
  */
 
+/**
+ * This function is designed to check and insert POST values for sign_up action.
+ * @param $request : must be POST form array.
+ */
 function sign_up_check($request = []){
     require_once "model/dbManager.php";
 
@@ -20,14 +24,17 @@ function sign_up_check($request = []){
     ){
         $effective = true;
 
+        // Check username constraints
         $username = $request['username'];
         $result = check_username($username);
         if($result !== true){$errors['username'] = $result; $effective = false;}
 
+        // Check email constraints
         $email = $request['email'];
         $result = check_email($email);
         if($result !== true){$errors['email'] = $result; $effective = false;}
 
+        // Check password constraints
         $password = $request['password'];
         $confirm = $request['confirm'];
         $result = check_password_constraints($password, $confirm);
@@ -55,15 +62,26 @@ function sign_up_check($request = []){
     }
 }
 
+/**
+ * This function is designed to check email constraints.
+ * @param $email : must be a string.
+ * @return boolean : true or false.
+ */
 function check_email($email){
     require_once "model/dbManager.php";
 
+    // Check if email is already registered in DB.
     if(isset(select('email', 'users', array('email' => $email))[0]['email'])){
         return 'Please, try another email, this one is already signed up.';
     }
     return true;
 }
 
+/**
+ * This function is designed to check username constraints.
+ * @param $username : must be a string.
+ * @return boolean : true or false.
+ */
 function check_username($username){
     require_once "model/dbManager.php";
 
@@ -77,12 +95,25 @@ function check_username($username){
     return true;
 }
 
+/**
+ * This function is designed to check text constraints.
+ * @param $text : must be a string.
+ * @param $min : must be minimum contained characters in $text string.
+ * @param $max : must be maximum contained characters in $text string.
+ * @return boolean : true or false.
+ */
 function check_text_length($text, $min, $max){
     if(strlen($text) < $min){return 'At least '. $min .' characters required.';}
     if(strlen($text) > $max){return 'Maximum of '. $max .' characters required.';}
     return true;
 }
 
+/**
+ * This function is designed to check password constraints for sign_up action.
+ * @param $password : must be a string.
+ * @param $confirm : must be a string.
+ * @return boolean : true or false.
+ */
 function check_password_constraints($password, $confirm){
     $minCharType = 0;
 
@@ -91,6 +122,7 @@ function check_password_constraints($password, $confirm){
     $numeric = false;
     $special = false;
 
+    // Check characters types contained in $password
     foreach(str_split($password) as $char){
         if(is_numeric($char)){$numeric = true;}
         if(ctype_upper($char)){$uppercase = true;}
@@ -117,6 +149,10 @@ function check_password_constraints($password, $confirm){
     return true;
 }
 
+/**
+ * This function is designed to check POST values for sign_in action.
+ * @param $request : must be POST form array.
+ */
 function sign_in_check($request){
     require_once "model/dbManager.php";
 
@@ -157,6 +193,10 @@ function sign_in_check($request){
     }
 }
 
+/**
+ * This function is designed to check POST values for profile action.
+ * @param $request : must be POST form array.
+ */
 function profile_check($request){
     require_once "model/dbManager.php";
 
@@ -164,6 +204,7 @@ function profile_check($request){
     $errors['description'] = '';
     $errors['import'] = '';
 
+    // Description update
     if(!empty($request['description'])) {
         $data['description'] = $request['description'];
         try{
@@ -175,6 +216,8 @@ function profile_check($request){
             profile();
         }
     }
+
+    // Profile image importation
     if (isset($_FILES['import'])) {
         $filename = $_SESSION['id'] .'pp';
         import_picture($_FILES['import'], $filename, 'view/content/picture/');
@@ -183,9 +226,14 @@ function profile_check($request){
     profile();
 }
 
+/**
+ * This function is designed to check and insert POST values for article action.
+ * @param $request : must be POST form array.
+ */
 function article_check($request){
     require_once "model/dbManager.php";
 
+    // Insert|Update article user mark.
     if(!empty($request['mark'])){
         $data['mark'] = $request['mark'];
         $data['article'] = select('id', 'articles', ['ui' => $_GET['ui']])[0][0];
@@ -201,6 +249,10 @@ function article_check($request){
     article();
 }
 
+/**
+ * This function is designed to check and insert POST values for add_article action.
+ * @param $request : must be POST form array.
+ */
 function add_article_check($request){
     require_once "model/dbManager.php";
 
@@ -216,7 +268,7 @@ function add_article_check($request){
             $data['description'] = $request['description'];
             $data['artwork'] = select('id', 'artworks', ['ui' => $_GET['ui']])[0][0];
             $data['author'] = $_SESSION['id'];
-            var_dump(insert('articles', $data));
+            insert('articles', $data);
         }
 
         if (isset($_FILES['import'])) {
@@ -230,6 +282,10 @@ function add_article_check($request){
     add_article();
 }
 
+/**
+ * This function is designed to check and insert POST values for add_artwork action.
+ * @param $request : must be POST form array.
+ */
 function add_artwork_check($request){
     require_once "model/dbManager.php";
 
@@ -260,6 +316,11 @@ function add_artwork_check($request){
     add_artwork();
 }
 
+/**
+ * This function is designed to generate unique identifiant (ui).
+ * @param $table : must be the table name where the new data will be inserted.
+ * @return string : generated ui.
+ */
 function ui_generation($table){
     $numeric = '1234567890';
     $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -281,6 +342,7 @@ function ui_generation($table){
             }
         }
 
+        // Check if ui is already registered in table.
         require_once "model/dbManager.php";
         if (!isset(select('ui', $table, ['ui' => $ui])[0][0])) {
             $valid = true;
@@ -290,6 +352,12 @@ function ui_generation($table){
     return $ui;
 }
 
+/**
+ * This function is designed to check pictures constraints.
+ * @param $picture : must be imported $_FILE.
+ * @param $filename : must be the picture name when imported in website folders.
+ * @return string|boolean : filename|false.
+ */
 function picture_check($picture, $filename){
     if (!empty($picture)) {
         $type = $picture['type'];
@@ -316,6 +384,12 @@ function picture_check($picture, $filename){
     return false;
 }
 
+/**
+ * This function is designed to check and import pictures in website folders.
+ * @param $newPicture : must be imported $_FILE.
+ * @param $filename : must be the picture name when imported in website folders.
+ * @param $url : must be folder url where picture will be saved.
+ */
 function import_picture($newPicture, $filename, $url){
     $pictureCheck = picture_check($newPicture, $filename);
     if($pictureCheck !== false){
@@ -332,9 +406,14 @@ function import_picture($newPicture, $filename, $url){
     }else $_SESSION['notify'] = "Allowed extensions: 'png', 'jpg', 'jpeg'.";
 }
 
+/**
+ * This function is designed to check and update in DB from POST values for modify_artwork action.
+ * @param $request : must be POST form array.
+ */
 function modify_artwork_check($request){
     require_once "model/dbManager.php";
     if (isset($request['submit'])){
+        // Update values in DB
         update('artworks', select('id', 'artworks', ['ui' => $_GET['ui']])[0][0],
             [
                 'title' => $request['title'],
@@ -352,9 +431,14 @@ function modify_artwork_check($request){
     modify_artwork();
 }
 
+/**
+ * This function is designed to check and update in DB from POST values for modify_article action.
+ * @param $request : must be POST form array.
+ */
 function modify_article_check($request){
     require_once "model/dbManager.php";
     if (isset($request['submit'])){
+        // Update values in DB
         update('articles', select('id', 'articles', ['ui' => $_GET['ui']])[0][0],
             [
                 'title' => $request['title'],
@@ -372,6 +456,9 @@ function modify_article_check($request){
     modify_article();
 }
 
+/**
+ * This function is designed to remove article in DB.
+ */
 function remove_article(){
     require_once "model/dbManager.php";
     delete('mark_as_article', ['article' => select('id', 'articles', ['ui' => $_GET['ui']])[0][0]]);
@@ -382,6 +469,9 @@ function remove_article(){
     die();
 }
 
+/**
+ * This function is designed to remove artwork in DB.
+ */
 function remove_artwork(){
     require_once "model/dbManager.php";
     delete('articles', ['artwork' => select('id', 'artworks', ['ui' => $_GET['ui']])[0][0]]);

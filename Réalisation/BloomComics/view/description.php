@@ -1,4 +1,9 @@
 <?php
+/*
+ * User: Samuel Meyer
+ * Date: 20.05.2021
+ */
+
 require_once "model/dbManager.php";
 require_once "view/view_helper.php";
 $data = select(['id', 'ui', 'title', 'description', 'releaseDate', 'editor', 'type'], 'artworks', array('ui' => $_GET['ui']))[0];

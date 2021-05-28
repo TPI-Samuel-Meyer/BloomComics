@@ -1,12 +1,19 @@
 <?php
-require_once "model/dbManager.php";
+/*
+ * User: Samuel Meyer
+ * Date: 20.05.2021
+ */
+
 require_once "view/view_helper.php";
+
+// Select required data to display users
+require_once "model/dbManager.php";
 $data = select(['id', 'ui', 'title', 'description', 'releaseDate', 'author'], 'articles', array('ui' => $_GET['ui']))[0];
 $data['mark'] = '';
 if ( isset(select('mark', 'mark_as_article', array('article' => $data['id'],'author' => $_SESSION['id']))[0][0])){
     $data['mark'] = select('mark', 'mark_as_article', array('article' => $data['id'],'author' => $_SESSION['id']))[0][0];
 }
-$page = $data['title'];
+$page = $data['title']; // Set page title
 ?>
 <div class='description'>
     <img src='<?=check_img($data['ui']);?>' />

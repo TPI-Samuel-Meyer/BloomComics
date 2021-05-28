@@ -54,7 +54,7 @@ class Db
     }
 
     /**
-     * This function is designed to update value in database
+     * This function is designed to update value in database.
      * @param $query : must be build in sql syntax and "?" instead data fields.
      * @param $params : must be a string or a string array with data that will be updated in database.
      * @return int : $statement->execute() returns the last inserted id if the insert was successful.

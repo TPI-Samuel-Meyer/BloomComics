@@ -5,7 +5,6 @@
  * Updated by :
  * - 10.05.21 - Samuel Meyer
  *  Copy the file and remove the useful code for BloomComics project.
- *
  */
 
 /**
@@ -94,30 +93,30 @@ function profile(){
 
 /**
  * This function is design to display instant temporary notification.
- * @param $text : must be the contained text in notification.
+ * @param $text : must be contained text in notification.
+ * @param $type : must be notification type (true:info|false:error).
  */
-function notify($text){
+function notify($text, $type = true){
     if(isset($text)){
         $time = strlen($text) * 75;
         $transition = 2;
         $total = $time + ($transition * 1000);
-
-        echo "
-      <div class='notification' id='notification'><div class='content'>". $text ."</div></div>
+    ?>
+      <div class='notification<?php if (!$type) {echo '-error';}?>' id='notification'><span class='content'><?=$text;?></span></div>
       <script>
         setInterval(
           function(){
             document.getElementById('notification').style.opacity = 0;
-            document.getElementById('notification').style.transition = '". $transition ."s';
+            document.getElementById('notification').style.transition = '<?=$transition;?>s';
           }
-        , ". $time .");
+        , <?=$time;?>);
         setInterval(
           function(){
             document.getElementById('notification').style.display = 'none';
           }
-        , ". $total .")
+        , <?=$total;?>)
       </script>
-    ";
+    <?php
         unset($text);
     }
 }
@@ -158,6 +157,9 @@ function add_artwork(){
     require_once "view/template.php";
 }
 
+/**
+ * This function is design to construct the modify_artwork page.
+ */
 function modify_artwork(){
     ob_start();
     global $errors;
@@ -169,6 +171,9 @@ function modify_artwork(){
     require_once "view/template.php";
 }
 
+/**
+ * This function is design to construct the modify_article page.
+ */
 function modify_article(){
     ob_start();
     global $errors;

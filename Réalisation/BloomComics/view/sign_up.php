@@ -1,3 +1,10 @@
+<?php
+/*
+ * User: Samuel Meyer
+ * Date: 18.05.2021
+ */
+?>
+
 <form method='post' action='index.php?action=sign_up'>
     <h1>Sign up</h1>
     <label>

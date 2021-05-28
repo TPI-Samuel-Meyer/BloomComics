@@ -28,8 +28,9 @@ function create_layer(ppup_id, zIndex){
 /**
  * This function is designed to create a layer on the site interface.
  * @param {string} id : must be a chosen pop-up id.
- * @param {string} text : must be the pop-up descriptive text.
- * @param {number} zIndex : must be the css pop-up position.
+ * @param {string} title : must be pop-up title.
+ * @param {string} text : must be pop-up descriptive text.
+ * @param {number} zIndex : must be css pop-up zIndex value.
  * @return {element} ppup : pop-up object.
  */
 function create_ppup(id, title, text, zIndex){
@@ -66,7 +67,10 @@ function create_ppup(id, title, text, zIndex){
 /**
  * This function is designed to create a layer on the site interface.
  * @param {string} id : must be a chosen pop-up id.
- * @param {number} zIndex : must be the css pop-up position.
+ * @param {string} action : must be pop-up action when confirmation is validated.
+ * @param {string} title : must be pop-up title.
+ * @param {string} text : must be pop-up descriptive text.
+ * @param {number} zIndex : must be css pop-up zIndex value.
  * @return {element} ppup : pop-up object.
  */
 function ppup_confirm(id, action, title, text, zIndex){

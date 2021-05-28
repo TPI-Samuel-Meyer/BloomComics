@@ -1,6 +1,13 @@
 <?php
-require_once "model/dbManager.php";
+/*
+ * User: Samuel Meyer
+ * Date: 20.05.2021
+ */
+
 require_once "view/view_helper.php";
+
+// Select required data to display users
+require_once "model/dbManager.php";
 $data = select(['id', 'username', 'description'], 'users', array('id' => $_GET['id']))[0];
 
 if($_GET['id'] == $_SESSION['id']) : ?>

@@ -4,6 +4,11 @@
  * Date: 20.05.2021
  */
 
+/**
+ * This function is designed to find an image in website folders from filename.
+ * @param $name : must be the filename without extension.
+ * @return string : returned image fullname.
+ **/
 function check_img($name){
     $allPictures = scandir('view/content/picture/');
     $alreadyHave = false;

@@ -226,11 +226,15 @@ function profile_check($request){
 
     // Friend request
     if (isset($request['friend_request'])) {
-        $data['user1'] = $_SESSION['id'];
-        $data['user2'] = $_GET['id'];
-        $data['status'] = 1;
-        insert('user_as_user', $data);
-        $_SESSION['notify'] = "Your friend request has been sent.";
+        if (empty(select('id', 'user_as_user', ['user1' => $_SESSION['id'], 'user2' => $_GET['id']]))) {
+            $data['user1'] = $_SESSION['id'];
+            $data['user2'] = $_GET['id'];
+            $data['status'] = 0;
+            insert('user_as_user', $data);
+            $_SESSION['notify'] = "Your friend request has been sent.";
+        }
+        else
+            $_SESSION['notify'] = "You already sent a friend request to this user.";
     }
 
     profile();
@@ -489,5 +493,25 @@ function remove_artwork(){
 
     $_SESSION['notify'] = "Artwork has been removed.";
     header('Location: index.php?action=artwork');
+    die();
+}
+
+/**
+ * This function is designed to update user relations to accept in DB.
+ */
+function accept_request() {
+    require_once 'model/dbManager.php';
+    if (!empty(select('id', 'user_as_user', ['user2' => $_SESSION['id'], 'user1' => $_GET['id']])))  update('user_as_user', select('id', 'user_as_user', ['user2' => $_SESSION['id'], 'user1' => $_GET['id']])[0][0], ['status' => 1]);
+    header('Location: index.php?action=profile&id='. $_GET['id']);
+    die();
+}
+
+/**
+ * This function is designed to update user relations to reject in DB.
+ */
+function reject_request() {
+    require_once 'model/dbManager.php';
+    if (!empty(select('id', 'user_as_user', ['user2' => $_SESSION['id'], 'user1' => $_GET['id']])))  delete('user_as_user', ['user1' => $_GET['id'], 'user2' => $_SESSION['id']]);
+    header('Location: index.php?action=profile&id='. $_GET['id']);
     die();
 }

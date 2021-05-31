@@ -3,6 +3,7 @@
 :root {
     --primary: #4c94f6;
     --secondary: #ee5454;
+    --third: #ffb300;
     --on-primary: ghostwhite;
     --surface: ghostwhite;
     --on-surface: #0a1c20;
@@ -71,6 +72,7 @@ body {
 
 .primary {background: var(--primary);}
 .secondary {background: var(--secondary);}
+.third {background: var(--third);}
 
 .btn:hover {
     opacity: 1;

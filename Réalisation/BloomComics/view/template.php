@@ -6,7 +6,8 @@
 require_once 'model/dbManager.php';
 if (isset($_SESSION['id']))
     if (!empty(select('status', 'user_as_user', ['user2' => $_SESSION['id']])))
-        $notifications = count(select('status', 'user_as_user', ['user2' => $_SESSION['id']]));
+        if (select('status', 'user_as_user', ['user2' => $_SESSION['id']])[0][0] == 0)
+            $notifications = count(select('status', 'user_as_user', ['user2' => $_SESSION['id']]));
  ?>
 <!DOCTYPE html>
 <html>

@@ -6,7 +6,7 @@
 
 require_once "model/dbManager.php";
 require_once "view/view_helper.php";
-$data = select(['id', 'ui', 'title', 'description', 'releaseDate', 'editor', 'type'], 'artworks', array('ui' => $_GET['ui']))[0];
+$data = select(['id', 'ui', 'title', 'description', 'releaseDate', 'editor', 'type'], 'artworks', ['ui' => $_GET['ui']])[0];
 $page = $data['title'];
 ?>
 <div class='description'>
@@ -26,8 +26,8 @@ $page = $data['title'];
     <?php endif;
     if(isset($_SESSION['type'])){
         if($_SESSION['type'] == 1) : ?>
-            <button class='btn secondary' onclick="location.href='index.php?action=modify_artwork&ui=<?=$data['ui'];?>';">Modify</button>
-            <button class='btn third'
+            <button class='btn third' onclick="location.href='index.php?action=modify_artwork&ui=<?=$data['ui'];?>';">Modify</button>
+            <button class='btn secondary'
                     onclick="ppup_confirm('confirmation_ppup', 'index.php.php?action=remove_artwork&ui=<?=$data['ui'];?>', 'Are you sure you want remove this artwork?', 'All its articles and marks will be removed.', 1000);"
             >Remove</button>
         <?php endif;

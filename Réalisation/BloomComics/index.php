@@ -55,7 +55,7 @@ switch ($_GET['action']) {
 
     case 'remove_artwork' :
         remove_artwork();
-        break;
+    break;
 
     case 'description' :
         description($_GET);
@@ -63,6 +63,18 @@ switch ($_GET['action']) {
 
     case 'profile' :
         profile_check($_POST);
+    break;
+
+    case 'friends' :
+        friends();
+    break;
+
+    case 'accept_request' :
+        accept_request();
+    break;
+
+    case 'reject_request' :
+        reject_request();
     break;
 
     case 'sign_in' :

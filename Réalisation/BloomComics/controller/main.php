@@ -184,3 +184,14 @@ function modify_article(){
     $content = ob_get_clean();
     require_once "view/template.php";
 }
+
+function friends() {
+    ob_start();
+    global $errors;
+    $page = 'Friends';
+    if(isset($_SESSION['notify'])){notify($_SESSION['notify']); unset($_SESSION['notify']);}
+    $content = include 'view/users.php';
+
+    $content = ob_get_clean();
+    require_once "view/template.php";
+}

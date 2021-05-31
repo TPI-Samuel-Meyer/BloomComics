@@ -8,10 +8,10 @@ require_once "view/view_helper.php";
 
 // Select required data to display users
 require_once "model/dbManager.php";
-$data = select(['id', 'ui', 'title', 'description', 'releaseDate', 'author'], 'articles', array('ui' => $_GET['ui']))[0];
+$data = select(['id', 'ui', 'title', 'description', 'releaseDate', 'author'], 'articles', ['ui' => $_GET['ui']])[0];
 $data['mark'] = '';
-if ( isset(select('mark', 'mark_as_article', array('article' => $data['id'],'author' => $_SESSION['id']))[0][0])){
-    $data['mark'] = select('mark', 'mark_as_article', array('article' => $data['id'],'author' => $_SESSION['id']))[0][0];
+if ( isset(select('mark', 'mark_as_article', ['article' => $data['id'],'author' => $_SESSION['id']])[0][0])){
+    $data['mark'] = select('mark', 'mark_as_article', ['article' => $data['id'],'author' => $_SESSION['id']])[0][0];
 }
 $page = $data['title']; // Set page title
 ?>
@@ -43,8 +43,8 @@ $page = $data['title']; // Set page title
 </span>
     <?php if(isset($_SESSION['type'])){
         if($_SESSION['type'] == 1) : ?>
-            <button onclick="location.href='index.php?action=modify_article&ui=<?=$data['ui'];?>';">Modify</button>
-            <button
+            <button class='btn third' onclick="location.href='index.php?action=modify_article&ui=<?=$data['ui'];?>';">Modify</button>
+            <button class='btn secondary'
                     onclick="ppup_confirm('confirmation_ppup', 'index.php.php?action=remove_article&ui=<?=$data['ui'];?>', 'Are you sure you want remove this article?', 'All users marks will be removed.', 1000);"
             >Remove</button>
         <?php endif;

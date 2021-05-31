@@ -537,3 +537,32 @@ function remove_user() {
     header('Location: index.php?action=users');
     die();
 }
+
+function add_category_check($request) {
+    require_once "model/dbManager.php";
+    if (isset($request['submit'])) {
+        insert('categories', ['name' => $request['name']]);
+        $_SESSION['notify'] = "Category has been added.";
+    }
+
+    header('Location: index.php?action=modify_categories');
+    die();
+}
+
+function modify_category_check($request) {
+    require_once "model/dbManager.php";
+    update('categories', $_GET['id'], ['name' => $request['name']]);
+
+    $_SESSION['notify'] = "Category has been modified.";
+    header('Location: index.php?action=modify_categories');
+    die();
+}
+
+function remove_category_check() {
+    require_once "model/dbManager.php";
+    delete('categories', ['id' => $_GET['id']]);
+
+    $_SESSION['notify'] = "Category has been removed.";
+    header('Location: index.php?action=modify_categories');
+    die();
+}

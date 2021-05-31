@@ -179,6 +179,8 @@ body {
 }
 
 .ppup .btn {
+    box-shadow: none;
+    color: var(--on-surface);
     cursor: pointer;
     padding: .5em;
 }
@@ -190,4 +192,23 @@ body {
 
 .ppup .primary_btn {
     color: var(--primary);
+}
+
+.category_element {
+    padding: 1em;
+}
+
+.category_element:hover {
+    background-color: rgba(0, 0, 0, .05);
+    transition: var(--transition-time);
+}
+
+.vanished_field {
+    margin: 1em 0 0;
+    padding: .5em;
+}
+
+.vanished_field:hover {
+    background-color: rgba(0, 0, 0, .05);
+    transition: var(--transition-time);
 }

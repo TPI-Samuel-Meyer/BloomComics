@@ -198,3 +198,7 @@ function friends() {
     $content = ob_get_clean();
     require_once "view/template.php";
 }
+
+function modify_categories(){
+    page_constructor('Modify categories');
+}

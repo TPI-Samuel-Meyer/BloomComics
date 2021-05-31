@@ -81,6 +81,22 @@ switch ($_GET['action']) {
         remove_user();
     break;
 
+    case 'modify_categories' :
+        modify_categories();
+    break;
+
+    case 'add_category' :
+        add_category_check($_POST);
+    break;
+
+    case 'modify_category' :
+        modify_category_check($_POST);
+    break;
+
+    case 'remove_category' :
+        remove_category_check();
+    break;
+
     case 'sign_in' :
         sign_in_check($_POST);
     break;

@@ -11,8 +11,8 @@ require_once "model/dbManager.php";
 $action = $_GET['action'];
 $editor = false;
 
-if(str_contains($action, 'artwork')){
-    if (str_contains($action, 'modify')){
+if(strpos($action, 'artwork')){
+    if (strpos($action, 'modify')){
         $data = select('id, ui, title, description, releaseDate, editor, type', 'artworks', ['ui' => $_GET['ui']])[0];
         $data['type'] = select('name', 'types', ['id' => $data['type']])[0][0];
     }
@@ -21,8 +21,8 @@ if(str_contains($action, 'artwork')){
     $editor = true;
 }
 
-if(str_contains($action, 'article')){
-    if (str_contains($action, 'modify')){
+if(strpos($action, 'article')){
+    if (strpos($action, 'modify')){
         $data = select('id, ui, title, description, releaseDate', 'articles', ['ui' => $_GET['ui']])[0];
     }
 }
@@ -34,11 +34,11 @@ if(str_contains($action, 'article')){
     </label>
     <label>
         <span>Release date</span>
-        <input name='releaseDate' type='date' value='<?php if (isset($data['releaseDate'])) echo $data['releaseDate'];?>' required/>
+        <input name='releaseDate' type='date' value='<?php if (isset($data['releaseDate'])) echo $data['releaseDate'];?>'/>
     </label>
 
     <?php if (isset($typeList)) : ?>
-        <select name='type' required>
+        <select name='type'>
             <option value='' <?php if (!isset($data['type'])) echo 'selected';?>>Select type</option>
             <?php foreach ($typeList as $type) : ?>
                 <option value='<?=$type['id'];?>' <?php if (isset($data['type'])) if ($type['name'] == $data['type']) echo 'selected';?>><?=$type['name'];?></option>

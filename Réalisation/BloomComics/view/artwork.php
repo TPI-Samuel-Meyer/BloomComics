@@ -9,8 +9,8 @@ require_once "model/dbManager.php";
 if(isset($_SESSION['type'])){
     if($_SESSION['type'] == 1) : ?>
         <span>
-            <button onclick="location.href='index.php?action=add_artwork';">Add artwork</button>
-            <button>Modify categories</button>
+            <button class='btn primary' onclick="location.href='index.php?action=add_artwork';">Add artwork</button>
+            <button class='btn primary' onclick="location.href='index.php?action=modify_categories';">Modify categories</button>
         </span>
     <?php endif;
 } ?>

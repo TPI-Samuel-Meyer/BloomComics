@@ -515,3 +515,25 @@ function reject_request() {
     header('Location: index.php?action=profile&id='. $_GET['id']);
     die();
 }
+
+/**
+ * This function is designed to remove artwork in DB.
+ */
+function remove_user() {
+    require_once "model/dbManager.php";
+    if (!empty(select('id, author', 'articles', ['author' => $_GET['id']]))) {
+        $articles = select('id, author', 'articles', ['author' => $_GET['id']]);
+        foreach ($articles as $article) update('articles', $article['id'], ['author' => $_SESSION['id']]);
+    }
+
+    delete('user_as_user', ['user1' => $_GET['id']]);
+    delete('user_as_user', ['user2' => $_GET['id']]);
+    delete('roles', ['user' => $_GET['id']]);
+    delete('comment_as_article', ['author' => $_GET['id']]);
+    delete('mark_as_article', ['author' => $_GET['id']]);
+    delete('users', ['id' => $_GET['id']]);
+
+    $_SESSION['notify'] = "User has been removed.";
+    header('Location: index.php?action=users');
+    die();
+}

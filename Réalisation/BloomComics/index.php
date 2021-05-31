@@ -77,6 +77,10 @@ switch ($_GET['action']) {
         reject_request();
     break;
 
+    case 'remove_user' :
+        remove_user();
+    break;
+
     case 'sign_in' :
         sign_in_check($_POST);
     break;

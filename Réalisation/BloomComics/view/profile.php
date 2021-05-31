@@ -75,7 +75,7 @@ if($_GET['id'] == $_SESSION['id']) : ?>
         } ?>
         <?php if (isset($_SESSION['type'])){
             if ($_SESSION['type'] == 1) : ?>
-                <button onclick="location.href='index.php?action=remove_user&id=<?=$_GET['id'];?>';">Remove</button>
+                <button class='btn secondary' onclick="location.href='index.php?action=remove_user&id=<?=$_GET['id'];?>';">Remove</button>
             <?php endif;
         } ?>
     </div>

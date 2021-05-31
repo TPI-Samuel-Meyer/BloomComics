@@ -5,6 +5,7 @@
  */
 
 require_once "view/view_helper.php";
+require_once "model/dbManager.php";
 if(isset($_SESSION['type'])){
     if($_SESSION['type'] == 1) : ?>
         <span>
@@ -14,28 +15,29 @@ if(isset($_SESSION['type'])){
     <?php endif;
 } ?>
 <form>
-    <select>
+    <select id='type_selector' onchange="type_filter();">
         <option value='' selected>Type</option>
+        <?php if (!empty(select('name', 'types'))) {
+            foreach (select('name', 'types') as $type) : ?>
+                <option value='<?=$type[0];?>'><?=$type[0];?></option>
+            <?php endforeach;
+        } ?>
     </select>
     <select>
         <option value='' selected>Category</option>
     </select>
-    <select>
-        <option value='' selected>Editor</option>
-    </select>
     <span>
-        <input type='text' placeholder='Search...'/>
+        <input oninput='search(this.value);' type='text' placeholder='Search by title or editor...'/>
     </span>
 </form>
 
 <?php
     // Select required data to display users
-    require_once "model/dbManager.php";
-    $data = select(['ui', 'title', 'description', 'type'], 'artworks');
+    $data = select(['ui', 'title', 'description', 'editor', 'type'], 'artworks');
     // Display artworks
     foreach($data as $key => $artwork) : ?>
 
-    <a class='card' href='index.php?action=description&ui=<?=$artwork['ui'];?>'>
+    <a class='card' href='index.php?action=description&ui=<?=$artwork['ui'];?>' editor='<?=$artwork['editor'];?>'>
         <img src='<?=check_img($artwork['ui']);?>' />
         <span class='content'>
             <span class='title'><?=$artwork['title'];?></span>

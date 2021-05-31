@@ -185,6 +185,9 @@ function modify_article(){
     require_once "view/template.php";
 }
 
+/**
+ * This function is design to construct the friends page.
+ */
 function friends() {
     ob_start();
     global $errors;

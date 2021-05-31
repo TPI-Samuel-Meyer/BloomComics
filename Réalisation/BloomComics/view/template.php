@@ -38,7 +38,7 @@ if (isset($_SESSION['id']))
     <div class="content">
         <?=$content;?>
     </div>
-    <script src='view/script/pop-up.js'>
-    <script src='view/script/ripples.js'></script>
+    <script src='view/script/pop-up.js'></script>
+    <script src='view/script/searchbar.js'></script>
 </body>
 </html>

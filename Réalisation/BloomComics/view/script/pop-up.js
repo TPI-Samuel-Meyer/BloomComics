@@ -72,7 +72,6 @@ function create_ppup(id, title, text, zIndex){
  */
 function ppup_confirm(id, action, title, text, zIndex){
     // Set pop-up buttons objects params values
-    console.log(action);
     var btn = document.createElement('div');
     btn.style.width = '100%';
 

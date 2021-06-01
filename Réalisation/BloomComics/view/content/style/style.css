@@ -81,26 +81,30 @@ body {
 
 .card {
     border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
     color: rgba(0, 0, 0, .8);
+    cursor: pointer;
     display: inline-block;
-    width: 25em;
+    margin: 1em;
+    width: auto;
 }
 
 .card:hover{
-    background-color: rgba(0, 0, 0, .05);
-    margin: 0;
+    opacity: .7;
     transition: .2s;
 }
 
 .card .content {
-    display: inline-block;
+    float: right;
     text-align: left;
-    padding: 0;
-    width: 65%;
+    padding: .5em;
+    vertical-align: top;
+    width: 300px;
 }
 
 .card img {
-    width: 30%;
+    height: auto;
+    width: 125px;
 }
 
 .card .text {

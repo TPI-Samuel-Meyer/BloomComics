@@ -22,11 +22,21 @@ else
     $data['author'] = 'Unknown';
 
 $page = $data['title']; // Set page title
+
+$query = "SELECT `article`,avg(`mark`) AS `AVG(mark)` from `mark_as_article` where `article` = ". select('id', 'articles', ['ui' => $_GET['ui']])[0][0] ." group by `article`;";
+require_once "model/dbConnector.php";
+global $db;
+if (!empty($db->select($query)[0]['AVG(mark)']))
+    $data['AVGmark'] = number_format($db->select($query)[0]['AVG(mark)'], 1);
+else
+    $data['AVGmark'] = 'N';
 ?>
 <div class='description'>
     <img src='<?=check_img($data['ui']);?>' />
     <span class='content'>
     <h3 class='title'><?=$data['title'];?></h3>
+    <span><?=$data['AVGmark'];?>/10</span>
+    <br/>
     <span>Added by <?=$data['author'];?></span>
     <br/>
     <span><?=$data['releaseDate'];?></span>

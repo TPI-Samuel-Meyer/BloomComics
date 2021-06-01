@@ -1,5 +1,5 @@
 USE `tpi_sma_main`;
 
-INSERT INTO roles (user`, `role`)
+INSERT INTO roles (`user`, `role`)
 VALUES
-('%_UserId_%', 1)
+('%_UserId_%', 1);

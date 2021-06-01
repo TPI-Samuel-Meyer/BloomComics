@@ -91,25 +91,6 @@ function delete($table, $targetedElements = []){
 }
 
 /**
- * This function is designed for sql delete query construction from params. It directly send the query with bdConnector.php update function.
- * @param $targetedDatas : must be the database targeted data columns.
- * @param $table : must be targeted table in database.
- * @param $name : must be view name.
- * @return int : $statement->execute() returns the last inserted id if the insert was successful.
- */
-function getView($targetedDatas, $table, $name){
-    global $db;
-    $query = 'SELECT OBJECT_SCHEMA_NAME('. $name .') '. $targetedDatas .' FROM '. $table;
-    if(!empty($targetedElements)){
-        $query .= ' WHERE '. sqlTextWHERE_Constructor($targetedElements);
-    }
-
-    $params = array_values($targetedElements);
-
-    return $db->select($query,$params);
-}
-
-/**
  * This function is designed to construct sql query part between "SELECT" and "FROM" from params.
  * @param $targetedDatas : must be the database targeted data columns.
  * @return string : returns correctly implemented targeted data columns for sql query Place in query : "SELECT <string> FROM..."

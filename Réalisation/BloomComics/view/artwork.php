@@ -36,13 +36,12 @@ if(isset($_SESSION['type'])){
     $data = select(['ui', 'title', 'description', 'editor', 'type'], 'artworks');
     // Display artworks
     foreach($data as $key => $artwork) : ?>
-
-    <a class='card' href='index.php?action=description&ui=<?=$artwork['ui'];?>' editor='<?=$artwork['editor'];?>'>
-        <img src='<?=check_img($artwork['ui']);?>' />
+    <div class='card' onclick="location.href='index.php?action=description&ui=<?=$artwork['ui'];?>';" editor='<?=$artwork['editor'];?>'>
+        <img src='<?=check_img($artwork['ui']);?>'/>
         <span class='content'>
             <span class='title'><?=$artwork['title'];?></span>
             <small class='text'><?=$artwork['description'];?></small>
             <span style='color: blueviolet;'><?=select('name', 'types', array('id' => $artwork['type']))[0][0];?></span>
         </span>
-    </a>
+    </div>
 <?php endforeach; ?>

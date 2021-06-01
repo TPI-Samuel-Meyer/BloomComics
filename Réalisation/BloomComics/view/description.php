@@ -34,15 +34,25 @@ $page = $data['title'];
     } ?>
 </div>
 
-<?php require_once "model/dbManager.php";
-$data = select(['ui', 'title', 'description'], 'articles', array('artwork' => select('id', 'artworks', array('ui' => $_GET['ui']))[0][0]));
+<?php
+$data = select(['ui', 'title', 'description'], 'articles', array('artwork' => select('id', 'artworks', ['ui' => $_GET['ui']])[0][0]));
+
 foreach($data as $key => $article) : ?>
-    <a class='card' href='index.php?action=article&ui=<?=$article['ui'];?>'>
+    <?php
+        $query = "SELECT `article`,avg(`mark`) AS `AVG(mark)` from `mark_as_article` where `article` = ". select('id', 'articles', ['ui' => $article['ui']])[0][0] ." group by `article`;";
+        require_once "model/dbConnector.php";
+        global $db;
+        if (!empty($db->select($query)[0]['AVG(mark)']))
+            $data['AVGmark'] = number_format($db->select($query)[0]['AVG(mark)'], 1);
+        else
+            $data['AVGmark'] = 'N';
+    ?>
+    <div class='card' onclick="location.href='index.php?action=article&ui=<?=$article['ui'];?>';">
         <img src='<?=check_img($article['ui']);?>' />
         <span class='content'>
             <span class='title'><?=$article['title'];?></span>
             <small class='text'><?=$article['description'];?></small>
-            <span>#Mark</span>
+            <span><?=$data['AVGmark'];?>/10</span>
         </span>
-    </a>
+    </div>
 <?php endforeach; ?>

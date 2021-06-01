@@ -212,3 +212,24 @@ body {
     background-color: rgba(0, 0, 0, .05);
     transition: var(--transition-time);
 }
+
+.comment-list {
+    display: inline-grid;
+    margin: 3em 0;
+}
+
+.comment-element {
+    border-top: solid 2px rgba(0, 0, 0, .25);
+    display: grid;
+    padding: .5em;
+}
+
+.comment-foot {
+    border-top: solid 1px rgba(0, 0, 0, .1);
+    font-size: smaller;
+    margin-top: .5em;
+}
+
+.comment-foot span {
+    padding: .5em;
+}

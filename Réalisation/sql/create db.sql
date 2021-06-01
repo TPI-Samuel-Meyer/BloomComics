@@ -1,9 +1,9 @@
 /* Create database if exists */
-CREATE DATABASE IF NOT EXISTS `bloomcomics`
+CREATE DATABASE IF NOT EXISTS `tpi_sma_main`
 
-USE `bloomcomics`;
+USE `tpi_sma_main`;
 SET default_storage_engine=InnoDB;
-ALTER DATABASE bloomcomics CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER DATABASE tpi_sma_main CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 /* Export articles table strucure */
 CREATE TABLE IF NOT EXISTS `articles` (
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `description` varchar(4000) DEFAULT NULL,
   `releaseDate` date DEFAULT NULL,
   `artwork` int unsigned NOT NULL,
-  `author` int unsigned NOT NULL,
+  `author` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`ui`)
 );
@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `comment_as_article` (
   `comment` varchar(2000) NOT NULL,
   `article` int unsigned NOT NULL,
   `author` int unsigned NOT NULL,
+  `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 );
 
@@ -68,7 +69,6 @@ CREATE TABLE IF NOT EXISTS `mark_as_article` (
 /* Export roles table strucure */
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` tinyint unsigned AUTO_INCREMENT NOT NULL,
-  `ui` varchar(32) NOT NULL,
   `user` int unsigned NOT NULL,
   `role` tinyint unsigned NOT NULL,
   PRIMARY KEY (`id`),

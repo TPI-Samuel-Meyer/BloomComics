@@ -526,6 +526,7 @@ function remove_user() {
         foreach ($articles as $article) update('articles', $article['id'], ['author' => $_SESSION['id']]);
     }
 
+    delete('comment_as_article', ['author' => $_GET['id']]);
     delete('user_as_user', ['user1' => $_GET['id']]);
     delete('user_as_user', ['user2' => $_GET['id']]);
     delete('roles', ['user' => $_GET['id']]);
@@ -564,5 +565,17 @@ function remove_category_check() {
 
     $_SESSION['notify'] = "Category has been removed.";
     header('Location: index.php?action=modify_categories');
+    die();
+}
+
+function comment($request){
+    require_once "model/dbManager.php";
+    if (isset($request['submit'])) {
+        $data['comment'] = $request['comment'];
+        $data['article'] = select('id', 'articles', ['ui' => $_GET['ui']])[0][0];
+        $data['author'] = $_SESSION['id'];
+        insert('comment_as_article', $data);
+    }
+    header('Location: index.php?action=article&ui='. $_GET['ui']);
     die();
 }

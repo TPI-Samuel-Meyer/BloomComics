@@ -9,20 +9,29 @@ require_once "view/view_helper.php";
 // Select required data to display users
 require_once "model/dbManager.php";
 $data = select(['id', 'ui', 'title', 'description', 'releaseDate', 'author'], 'articles', ['ui' => $_GET['ui']])[0];
+//$avg = getView('AVG(mark)', 'mark_as_article', 'average');
+//var_dump($avg);
 $data['mark'] = '';
-if ( isset(select('mark', 'mark_as_article', ['article' => $data['id'],'author' => $_SESSION['id']])[0][0])){
-    $data['mark'] = select('mark', 'mark_as_article', ['article' => $data['id'],'author' => $_SESSION['id']])[0][0];
-}
+if (isset($_SESSION['id']))
+    if (!empty(select('mark', 'mark_as_article', ['article' => $data['id'],'author' => $_SESSION['id']])[0][0]))
+        $data['mark'] = select('mark', 'mark_as_article', ['article' => $data['id'],'author' => $_SESSION['id']])[0][0];
+
+if (!empty(select('username', 'users', ['id' => $data['author']])))
+    $data['author'] = select('username', 'users', array('id' => $data['author']))[0][0];
+else
+    $data['author'] = 'Unknown';
+
 $page = $data['title']; // Set page title
 ?>
 <div class='description'>
     <img src='<?=check_img($data['ui']);?>' />
     <span class='content'>
     <h3 class='title'><?=$data['title'];?></h3>
-    <span>Added by <?=select('username', 'users', array('id' => $data['author']))[0][0];?></span>
+    <span>Added by <?=$data['author'];?></span>
     <br/>
     <span><?=$data['releaseDate'];?></span>
     <br/>
+    <span></span>
     <?php if(isset($_SESSION['username'])) : ?>
         <form id='mark_form' method='post' action='index.php?action=article&ui=<?=$data['ui'];?>'>
             <select name='mark' onchange="document.getElementById('mark_form').submit();">
@@ -51,3 +60,26 @@ $page = $data['title']; // Set page title
     } ?>
 </div>
 <p><?=$data['description'];?></p>
+
+<h2>Comments</h2>
+<?php if (isset($_SESSION['id'])) : ?>
+    <form method='post' action='index.php?action=comment&ui=<?=$data['ui'];?>'>
+        <textarea name='comment'></textarea>
+        <button type='reset'>Cancel</button>
+        <button name='submit' type='submit'>Comment</button>
+    </form>
+<?php endif; ?>
+<?php if (!empty(select('id', 'comment_as_article'))) {
+    ?>
+    <div class='comment-list'>
+        <?php
+        $comments = select('id, comment, article, author, timestamp', 'comment_as_article');
+        foreach ($comments as $key => $value) : ?>
+        <?php $value['author'] = select('username', 'users', ['id' => $value['author']])[0][0];?>
+        <span id='<?=$value['id'];?>' class='comment-element'>
+            <span class='comment-text'><?=$value['comment'];?></span>
+            <span class='comment-foot'><span>By <?=$value['author'];?></span><span><?=$value['timestamp'];?></span></span>
+        </span>
+        <?php endforeach; ?>
+    </div>
+<?php }

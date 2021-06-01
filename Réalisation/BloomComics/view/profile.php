@@ -28,16 +28,19 @@ if($_GET['id'] == $_SESSION['id']) : ?>
     </span>
 </div>
 <form method='post' action='index.php?action=profile&id=<?=$_GET['id'];?>'>
-    <textarea name='description'
-        oninput="document.getElementById('description_submit').style.display = 'block';"
-    ><?=$data['description'];?></textarea>
-    <span><?=$errors['description'];?></span>
-    <input id='description_submit' type='submit' value='Modify' style='display: none;'/>
+    <span>
+        <textarea name='description'
+                  oninput="document.getElementById('description_submit').style.display = 'block';"
+        ><?=$data['description'];?></textarea>
+        <span><?=$errors['description'];?></span>
+        <button class='btn primary' id='description_submit' type='submit' style='display: none; margin: auto;'>Upload description</button>
+    </span>
 </form>
 
-<form id='import_ppup' class='ppup' method='post' action='index.php?action=profile&id=<?=$_GET['id'];?>' enctype="multipart/form-data" style='display: none;'>
+<form id='import_ppup' method='post' action='index.php?action=profile&id=<?=$_GET['id'];?>' enctype="multipart/form-data" style='display: none;'>
+    <h3>Upload new profile picture</h3>
     <input type='file' name='import'/>
-    <input type='submit' value='Import'/>
+    <button class='btn primary' type='submit' value='Import'>Upload</button>
 </form>
 
 <?php else : ?>

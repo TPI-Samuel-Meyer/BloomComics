@@ -11,8 +11,8 @@
 
 /**
  * This function is designed for sql select query construction from params. It directly send the query with bdConnector.php select function.
- * @param $targetedDatas : must be the database targeted data columns.
- * @param $table : must be the targeted table in database.
+ * @param $targetedDatas : must be database targeted data columns.
+ * @param $table : must be targeted table in database.
  * @param $targetedElements : must be a string array [field => value] ex. "WHERE <field> = <value>"  (multiple "WHERE" is managed, auto-separated with "AND")..
  * @return array|false|null
  */
@@ -30,9 +30,9 @@ function select($targetedDatas, $table, $targetedElements = []){
 
 /**
  * This function is designed for sql insert query construction from params. It directly send the query with bdConnector.php insert function.
- * @param $table : must be the targeted table in database.
+ * @param $table : must be targeted table in database.
  * @param $newDatas [field => value] : must be a string array containing sql field and data to insert in. <field> as sql field and <value> as data to insert.
- * @return int : $statement->execute() returns the last inserted id if the insert was successful.
+ * @return int : $statement->execute() returns last inserted id if the insert was successful.
  */
 function insert($table, $newDatas = []){
   global $db;
@@ -53,8 +53,8 @@ function insert($table, $newDatas = []){
 
 /**
  * This function is designed for sql update query construction from params. It directly send the query with bdConnector.php update function.
- * @param $table : must be the targeted table in database.
- * @param $id : must be the targeted element id that data will be updated.
+ * @param $table : must be targeted table in database.
+ * @param $id : must be targeted element id that data will be updated.
  * @param $newDatas [field => value] : must be a string array containing sql field and new data. <field> as sql field and <value> as new data.
  * @return int : $statement->execute() returns the last inserted id if the insert was successful.
 **/
@@ -74,7 +74,7 @@ function update($table, $id, $newDatas = []){
 
 /**
  * This function is designed for sql delete query construction from params. It directly send the query with bdConnector.php update function.
- * @param $table : must be the targeted table in database.
+ * @param $table : must be targeted table in database.
  * @param $targetedElements : must be a string array [field => value] ex. "WHERE <field> = <value>"  (multiple "WHERE" is managed, auto-separated with "AND")..
  * @return int : $statement->execute() returns the last inserted id if the insert was successful.
  */
@@ -88,6 +88,25 @@ function delete($table, $targetedElements = []){
     $params = array_values($targetedElements);
 
     return $db->update($query,$params);
+}
+
+/**
+ * This function is designed for sql delete query construction from params. It directly send the query with bdConnector.php update function.
+ * @param $targetedDatas : must be the database targeted data columns.
+ * @param $table : must be targeted table in database.
+ * @param $name : must be view name.
+ * @return int : $statement->execute() returns the last inserted id if the insert was successful.
+ */
+function getView($targetedDatas, $table, $name){
+    global $db;
+    $query = 'SELECT OBJECT_SCHEMA_NAME('. $name .') '. $targetedDatas .' FROM '. $table;
+    if(!empty($targetedElements)){
+        $query .= ' WHERE '. sqlTextWHERE_Constructor($targetedElements);
+    }
+
+    $params = array_values($targetedElements);
+
+    return $db->select($query,$params);
 }
 
 /**

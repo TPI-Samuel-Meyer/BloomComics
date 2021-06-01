@@ -97,6 +97,10 @@ switch ($_GET['action']) {
         remove_category_check();
     break;
 
+    case 'comment' :
+        comment($_POST);
+    break;
+
     case 'sign_in' :
         sign_in_check($_POST);
     break;

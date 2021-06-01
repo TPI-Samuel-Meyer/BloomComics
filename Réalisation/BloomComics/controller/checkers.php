@@ -427,8 +427,9 @@ function import_picture($newPicture, $filename, $url){
 function modify_artwork_check($request){
     require_once "model/dbManager.php";
     if (isset($request['submit'])){
+        $id = select('id', 'artworks', ['ui' => $_GET['ui']])[0][0];
         // Update values in DB
-        update('artworks', select('id', 'artworks', ['ui' => $_GET['ui']])[0][0],
+        update('artworks', $id,
             [
                 'title' => $request['title'],
                 'releaseDate' => $request['releaseDate'],
@@ -437,6 +438,13 @@ function modify_artwork_check($request){
                 'description' => $request['description']
             ]
         );
+
+        if (isset($request['category'])) {
+            delete('category_as_artwork', ['artwork' => $id]);
+            foreach ($request['category'] as $key => $value) {
+                if (empty(select('id', 'category_as_artwork', ['category' => $key, 'artwork' => $id]))) insert('category_as_artwork', ['category' => $key, 'artwork' => $id]);
+            }
+        }
 
         $_SESSION['notify'] = "Artwork has been modified.";
         header('Location: index.php?action=description&ui='. $_GET['ui']);

@@ -4,13 +4,12 @@
  */
 
 /**
- * This function is design display or not different articles as type selector value.
+ * This function is design display or not different artwork as type selector value.
  */
 function type_filter() {
     Array.prototype.forEach.call(card = document.getElementsByClassName('card'), element => {
         if (!element.childNodes[3].childNodes[5].innerHTML.includes(document.getElementById('type_selector').value)) element.style.display = 'none';
         else element.style.display = 'inline-block';
-        console.log(element);
     });
 }
 
@@ -41,5 +40,15 @@ function search_editor(text) {
         if (valid) element.style.display = 'inline-block';
         else element.style.display = 'none';
         if (!element.childNodes[3].childNodes[5].innerHTML.includes(document.getElementById('type_selector').value)) element.style.display = 'none';
+    });
+}
+
+/**
+ * This function is design display or not different artwork as category selector value.
+ */
+function category_filter() {
+    Array.prototype.forEach.call(card = document.getElementsByClassName('card'), element => {
+        if (!element.attributes.categories.value.includes(document.getElementById('category_selector').value)) element.style.display = 'none';
+        else element.style.display = 'inline-block';
     });
 }

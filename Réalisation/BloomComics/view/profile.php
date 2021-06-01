@@ -17,9 +17,10 @@ if (isset($_SESSION['id']))
 if($_GET['id'] == $_SESSION['id']) : ?>
 
 <div class='description'>
-    <img src='<?=check_img($data['id'] .'pp');?>'
-        onclick="document.getElementById('import_ppup').style.display = 'block';"
-    />
+    <div class='profile-picture' onclick="document.getElementById('import_ppup').style.display = 'block';">
+        <img class='profile-picture_img' src='<?=check_img($data['id'] .'pp');?>'/>
+        <span class='material-icons'>edit</span>
+    </div>
     <span class='content'>
         <h3 class='title'><?=$data['username'];?></h3>
     </span>

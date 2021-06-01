@@ -11,8 +11,8 @@ require_once "model/dbManager.php";
 $action = $_GET['action'];
 $editor = false;
 
-if(strpos($action, 'artwork')){
-    if (strpos($action, 'modify')){
+if(strpos($action, 'artwork') !== null){
+    if (strpos($action, 'modify') !== null){
         $data = select('id, ui, title, description, releaseDate, editor, type', 'artworks', ['ui' => $_GET['ui']])[0];
         $data['type'] = select('name', 'types', ['id' => $data['type']])[0][0];
     }
@@ -21,13 +21,13 @@ if(strpos($action, 'artwork')){
     $editor = true;
 }
 
-if(strpos($action, 'article')){
+if(strpos($action, 'article') !== null){
     if (strpos($action, 'modify')){
         $data = select('id, ui, title, description, releaseDate', 'articles', ['ui' => $_GET['ui']])[0];
     }
 }
 ?>
-<form method='post' action='index.php?action=<?=$action;?><?php if (isset($_GET['ui'])) echo '&ui='. $_GET['ui'];?>' enctype="multipart/form-data">
+<form class='form-tmp' method='post' action='index.php?action=<?=$action;?><?php if (isset($_GET['ui'])) echo '&ui='. $_GET['ui'];?>' enctype="multipart/form-data">
     <label>
         <span>Title</span>
         <input name='title' type='text' value='<?php if (isset($data['title'])) echo $data['title'];?>' required/>
@@ -47,12 +47,13 @@ if(strpos($action, 'article')){
     <?php endif; ?>
 
     <?php if (isset($categoriesList)) : ?>
-        <select name='category'>
+        <select onchange='newCategoryElement(this.value);'>
             <option value=''>Select category</option>
             <?php foreach ($categoriesList as $category) : ?>
-                <option value='<?=$category['id'];?>'><?=$category['name'];?></option>
+                <option id='cat-id-<?=$category['id'];?>' value='<?=$category['id'];?>'><?=$category['name'];?></option>
             <?php endforeach; ?>
         </select>
+        <div id='category-list'></div>
     <?php endif; ?>
 
     <?php if ($editor) : ?>
@@ -72,6 +73,6 @@ if(strpos($action, 'article')){
         <span>Description</span>
         <textarea name='description'><?php if (isset($data['description'])) echo $data['description'];?></textarea>
     </label>
-    <input type='reset' value='Cancel' onclick="location.href='index.php?action=artwork'"/>
-    <input name='submit' type='submit' value='Confirm'/>
+    <input class='btn primary' name='submit' type='submit' value='Confirm'/>
+    <input class='btn secondary' type='reset' value='Cancel' onclick="location.href='index.php?action=artwork'"/>
 </form>

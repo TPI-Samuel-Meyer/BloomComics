@@ -23,8 +23,13 @@ if(isset($_SESSION['type'])){
             <?php endforeach;
         } ?>
     </select>
-    <select>
+    <select id='category_selector' onchange="category_filter();">
         <option value='' selected>Category</option>
+        <?php if (!empty(select('name', 'categories'))) {
+            foreach (select('name', 'categories') as $type) : ?>
+                <option value='<?=$type[0];?>'><?=$type[0];?></option>
+            <?php endforeach;
+        } ?>
     </select>
     <span>
         <input oninput='search(this.value);' type='text' placeholder='Search by title or editor...'/>
@@ -33,10 +38,20 @@ if(isset($_SESSION['type'])){
 
 <?php
     // Select required data to display users
-    $data = select(['ui', 'title', 'description', 'editor', 'type'], 'artworks');
+    $data = select('id, ui, title, description, editor, type', 'artworks');
+    $categories = '';
     // Display artworks
     foreach($data as $key => $artwork) : ?>
-    <div class='card' onclick="location.href='index.php?action=description&ui=<?=$artwork['ui'];?>';" editor='<?=$artwork['editor'];?>'>
+    <?php
+        if (!empty(select('category, artwork', 'category_as_artwork', ['artwork' => $artwork['id']]))) {
+            $linkedCategories = select('category, artwork', 'category_as_artwork', ['artwork' => $artwork['id']]);
+            foreach ($linkedCategories as $key => $value) {
+                $prepCategories[] = select('name', 'categories', ['id' => $value['category']])[0][0];
+            }
+            $categories = implode(", ", $prepCategories);
+        }
+    ?>
+    <div class='card' onclick="location.href='index.php?action=description&ui=<?=$artwork['ui'];?>';" editor='<?=$artwork['editor'];?>' categories="<?=$categories;?>">
         <img src='<?=check_img($artwork['ui']);?>'/>
         <span class='content'>
             <span class='title'><?=$artwork['title'];?></span>

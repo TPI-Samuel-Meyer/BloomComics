@@ -71,8 +71,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `id` tinyint unsigned AUTO_INCREMENT NOT NULL,
   `user` int unsigned NOT NULL,
   `role` tinyint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE (`ui`)
+  PRIMARY KEY (`id`)
 );
 
 /* Export types table strucure */

@@ -15,7 +15,7 @@
 function page_constructor($page){
     ob_start();
     global $errors;
-    if(isset($_SESSION['notify'])){notify($_SESSION['notify']); unset($_SESSION['notify']);}
+    if(isset($_SESSION['notify'])) notify($_SESSION['notify']);
     require_once 'view/'. $_GET['action'] .'.php';
 
     $content = ob_get_clean();
@@ -102,7 +102,7 @@ function notify($text, $type = true){
         $transition = 2;
         $total = $time + ($transition * 1000);
     ?>
-      <div class='notification<?php if (!$type) {echo '-error';}?>' id='notification'><span class='content'><?=$text;?></span></div>
+      <div class='notification<?php if (!$type) {echo '-error';}?>' id='notification' style="z-Index: 1000;"><span class='content'><?=$text;?></span></div>
       <script>
         setInterval(
           function(){

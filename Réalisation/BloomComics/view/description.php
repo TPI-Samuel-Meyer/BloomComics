@@ -28,7 +28,7 @@ $page = $data['title'];
         if($_SESSION['type'] == 1) : ?>
             <button class='btn third' onclick="location.href='index.php?action=modify_artwork&ui=<?=$data['ui'];?>';">Modify</button>
             <button class='btn secondary'
-                    onclick="ppup_confirm('confirmation_ppup', 'index.php.php?action=remove_artwork&ui=<?=$data['ui'];?>', 'Are you sure you want remove this artwork?', 'All its articles and marks will be removed.', 1000);"
+                    onclick="ppup_confirm('confirmation_ppup', 'index.php?action=remove_artwork&ui=<?=$data['ui'];?>', 'Are you sure you want remove this artwork?', 'All its articles and marks will be removed.', 1000);"
             >Remove</button>
         <?php endif;
     } ?>

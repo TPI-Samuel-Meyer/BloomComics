@@ -79,7 +79,9 @@ if($_GET['id'] == $_SESSION['id']) : ?>
         } ?>
         <?php if (isset($_SESSION['type'])){
             if ($_SESSION['type'] == 1) : ?>
-                <button class='btn secondary' onclick="location.href='index.php?action=remove_user&id=<?=$_GET['id'];?>';">Remove</button>
+                <button class='btn secondary'
+                        onclick="ppup_confirm('confirmation_ppup', 'index.php?action=remove_user&id=<?=$_GET['id'];?>', 'Are you sure you want remove this user?', '', 1000);"
+                >Remove</button>
             <?php endif;
         } ?>
     </div>

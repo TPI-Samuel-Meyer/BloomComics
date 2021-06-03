@@ -11,8 +11,8 @@ require_once "model/dbManager.php";
 $action = $_GET['action'];
 $editor = false;
 
-if(strpos($action, 'artwork') !== null){
-    if (strpos($action, 'modify') !== null){
+if(strpos($action, 'artwork') !== false){
+    if (strpos($action, 'modify') !== false){
         $data = select('id, ui, title, description, releaseDate, editor, type', 'artworks', ['ui' => $_GET['ui']])[0];
         $data['type'] = select('name', 'types', ['id' => $data['type']])[0][0];
     }
@@ -21,11 +21,11 @@ if(strpos($action, 'artwork') !== null){
     $editor = true;
 }
 
-if(strpos($action, 'article') !== null){
-    if (strpos($action, 'modify')){
-        $data = select('id, ui, title, description, releaseDate', 'articles', ['ui' => $_GET['ui']])[0];
-    }
+if(strpos($action, 'modify_article') !== false){
+    $data = select('id, ui, title, description, releaseDate', 'articles', ['ui' => $_GET['ui']])[0];
 }
+
+if(strpos($action, 'add') !== false) unset($data);
 ?>
 <form class='form-tmp' method='post' action='index.php?action=<?=$action;?><?php if (isset($_GET['ui'])) echo '&ui='. $_GET['ui'];?>' enctype="multipart/form-data">
     <label>
@@ -50,10 +50,11 @@ if(strpos($action, 'article') !== null){
         <select onchange='newCategoryElement(this.value);'>
             <option value=''>Select category</option>
             <?php foreach ($categoriesList as $category) : ?>
-                <option id='cat-id-<?=$category['id'];?>' value='<?=$category['id'];?>'><?=$category['name'];?></option>
+            <option id='cat-id-<?=$category['id'];?>' value='<?=$category['id'];?>'><?=$category['name'];?></option>
             <?php endforeach; ?>
         </select>
-        <div id='category-list'></div>
+        <div id='category-list'>
+        </div>
     <?php endif; ?>
 
     <?php if ($editor) : ?>

@@ -80,7 +80,7 @@ class Db
     private function openDBConnection(){
         $sqlDriver = 'mysql';
         $hostname = 'localhost';
-        $port = 7720;
+        $port = 7710;
         $charset = 'utf8';
         $dbName = 'tpi_sma_main';
         $userName = 'tpi_sma_manage';

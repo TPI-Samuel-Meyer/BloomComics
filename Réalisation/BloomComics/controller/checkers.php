@@ -496,8 +496,10 @@ function remove_article(){
  */
 function remove_artwork(){
     require_once "model/dbManager.php";
-    delete('articles', ['artwork' => select('id', 'artworks', ['ui' => $_GET['ui']])[0][0]]);
+    $id = select('id', 'artworks', ['ui' => $_GET['ui']])[0][0];
+    delete('articles', ['artwork' => $id]);
     delete('artworks', ['ui' => $_GET['ui']]);
+    delete('category_as_artwork', ['artwork' => $id]);
 
     $_SESSION['notify'] = "Artwork has been removed.";
     header('Location: index.php?action=artwork');
@@ -509,7 +511,8 @@ function remove_artwork(){
  */
 function accept_request() {
     require_once 'model/dbManager.php';
-    if (!empty(select('id', 'user_as_user', ['user2' => $_SESSION['id'], 'user1' => $_GET['id']])))  update('user_as_user', select('id', 'user_as_user', ['user2' => $_SESSION['id'], 'user1' => $_GET['id']])[0][0], ['status' => 1]);
+    if (!empty(select('id', 'user_as_user', ['user2' => $_SESSION['id'], 'user1' => $_GET['id']])))
+        update('user_as_user', select('id', 'user_as_user', ['user2' => $_SESSION['id'], 'user1' => $_GET['id']])[0][0], ['status' => 1]);
     header('Location: index.php?action=profile&id='. $_GET['id']);
     die();
 }
@@ -519,7 +522,8 @@ function accept_request() {
  */
 function reject_request() {
     require_once 'model/dbManager.php';
-    if (!empty(select('id', 'user_as_user', ['user2' => $_SESSION['id'], 'user1' => $_GET['id']])))  delete('user_as_user', ['user1' => $_GET['id'], 'user2' => $_SESSION['id']]);
+    if (!empty(select('id', 'user_as_user', ['user2' => $_SESSION['id'], 'user1' => $_GET['id']])))
+        delete('user_as_user', ['user1' => $_GET['id'], 'user2' => $_SESSION['id']]);
     header('Location: index.php?action=profile&id='. $_GET['id']);
     die();
 }
@@ -532,6 +536,13 @@ function remove_user() {
     if (!empty(select('id, author', 'articles', ['author' => $_GET['id']]))) {
         $articles = select('id, author', 'articles', ['author' => $_GET['id']]);
         foreach ($articles as $article) update('articles', $article['id'], ['author' => $_SESSION['id']]);
+    }
+
+    $url = 'view/content/picture';
+    $allPictures = scandir($url);
+    foreach($allPictures as $picture){
+        $file = pathinfo($url. $picture);
+        if($file['filename'] == $_SESSION['id']. 'pp'){unlink($url . $file['basename']);}
     }
 
     delete('comment_as_article', ['author' => $_GET['id']]);
